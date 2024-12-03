@@ -14,6 +14,7 @@ interface Product {
   styleUrl: './shop.component.css',
 })
 export class ShopComponent {
+  //1. DAti Fondamnetali
   // Lista di prodotti che rispetta l'interfaccia Product
   products: Product[] = [
     {
@@ -36,11 +37,24 @@ export class ShopComponent {
     },
   ];
 
-  
+  //inizialiazziamo un prezzo minimo e massimo di default per l utente
+  minPrice: number = 0;
+  maxPrice: number = 0;
+
+  //Copia ddella lista, attraverso lo spread opertaor così da non alterare i products originali, nel caso dovesse servirmi altrove
+  filteredProducts: Product[] = [...this.products];
+
+  //2. Metodi
+
   //filtrare i prodotti in base al prezzo
   filterByPrice(min: number, max: number): Product[] {
     return this.products.filter(
       (product) => product.price >= min && product.price <= max
     );
+  }
+
+  // applicazione filtro attraverso l evento click
+  applyFilter(): void {
+    this.filteredProducts= this.filterByPrice(this.minPrice, this.maxPrice)
   }
 }
