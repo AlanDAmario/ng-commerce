@@ -1,69 +1,74 @@
-<div class="container mx-auto py-8">
+<div class="container py-5">
   <!-- Titolo e descrizione -->
-  <header class="text-center mb-8">
-    <h1 class="text-4xl font-extrabold text-gray-800">E-Commerce Shop</h1>
-    <p class="text-lg text-gray-600">
-      Trova i migliori prodotti al miglior prezzo!
-    </p>
+  <header class="text-center mb-5">
+    <h1 class="display-4 fw-extrabold text-dark">E-Commerce Shop</h1>
+    <p class="lead text-muted">Trova i migliori prodotti al miglior prezzo!</p>
   </header>
 
-  <!-- Filtro prezzi -->
-  <section class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Filtra per prezzo</h2>
-    <div class="flex items-center gap-4">
-      <!-- Input per prezzo minimo -->
-      <div>
-        <label for="minPrice" class="block text-sm font-medium text-gray-700"
-          >Prezzo Minimo</label
+  <!-- Filtro prezzi con slider -->
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-4">Filtra per prezzo</h2>
+    <form class="row g-3 align-items-center">
+      <!-- Slider per prezzo minimo -->
+      <div class="col-12">
+        <label for="priceRange" class="form-label"
+          >Seleziona Intervallo di Prezzo (€)</label
         >
         <input
-          id="minPrice"
-          type="number"
+          type="range"
+          id="priceRange"
+          class="form-range"
+          min="0"
+          max="1200"
+          step="10"
           [(ngModel)]="minPrice"
-          class="p-2 border rounded-lg w-full"
-          placeholder="Inserisci il minimo"
+          name="minPrice"
+          (input)="applyFilter()"
         />
+        <div class="d-flex justify-content-between">
+          <span>€0</span>
+          <span>€1200</span>
+        </div>
       </div>
-      <!-- Input per prezzo massimo -->
-      <div>
-        <label for="maxPrice" class="block text-sm font-medium text-gray-700"
-          >Prezzo Massimo</label
-        >
-        <input
-          id="maxPrice"
-          type="number"
-          [(ngModel)]="maxPrice"
-          class="p-2 border rounded-lg w-full"
-          placeholder="Inserisci il massimo"
-        />
+
+      <!-- Mostra il valore selezionato -->
+      <div class="col-12 text-center">
+        <p>
+          Prezzo Minimo Selezionato: <strong>€{{ minPrice }}</strong>
+        </p>
       </div>
+
       <!-- Pulsante applica filtro -->
-      <button
-        (click)="applyFilter()"
-        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-      >
-        Filtra
-      </button>
+      
+    </form>
+  </section>
+
+  <!-- Lista Prodotti -->
+  <section>
+    <h2 class="h3 fw-bold mb-4 text-center">I Nostri Prodotti</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+      <!-- Iterazione sui prodotti filtrati -->
+      <div *ngFor="let product of filteredProducts" class="col">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <div class="mt-auto">
+              <p class="fs-5 fw-semibold text-primary">
+                {{ product.price | currency : "EUR" }}
+              </p>
+              <button class="btn btn-success w-100">
+                Aggiungi al Carrello
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Lista prodotti -->
-  <section>
-    <h2 class="text-2xl font-bold mb-4">Lista Prodotti</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Iterazione sui prodotti filtrati -->
-      <div
-        *ngFor="let product of filteredProducts"
-        class="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg"
-      >
-        <h3 class="text-lg font-bold text-gray-800">{{ product.name }}</h3>
-        <!-- Interpolazione -->
-        <p class="text-sm text-gray-600">{{ product.description }}</p>
-        <p class="text-xl font-semibold text-blue-500">
-          {{ product.price | currency }}
-        </p>
-        <!-- Pipe -->
-      </div>
-    </div>
-  </section>
+  <!-- Footer -->
+  <footer class="mt-5 text-center text-muted">
+    &copy; 2024 E-Commerce Shop. Tutti i diritti riservati.
+  </footer>
 </div>

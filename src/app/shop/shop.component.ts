@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
-import { max, min } from 'rxjs';
 
-//Definiamo l interfaccia per la tipizzazione dei prodotti
+// Definiamo l'interfaccia per la tipizzazione dei prodotti
 interface Product {
   id: number;
   name: string;
   description: string;
   price: number;
 }
+
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
-  styleUrl: './shop.component.css',
+  styleUrls: ['./shop.component.css'],
 })
 export class ShopComponent {
-  //1. DAti Fondamnetali
-  // Lista di prodotti che rispetta l'interfaccia Product
+  // 1. Dati fondamentali
   products: Product[] = [
     {
       id: 1,
@@ -37,24 +36,23 @@ export class ShopComponent {
     },
   ];
 
-  //inizialiazziamo un prezzo minimo e massimo di default per l utente
+  // Impostiamo i valori di default per i filtri
   minPrice: number = 0;
-  maxPrice: number = 0;
+  maxPrice: number = 1200; // Aggiunto anche il massimo (se vuoi gestirlo)
 
-  //Copia ddella lista, attraverso lo spread opertaor così da non alterare i products originali, nel caso dovesse servirmi altrove
+  // Lista dei prodotti filtrati (inizialmente uguale a tutti i prodotti)
   filteredProducts: Product[] = [...this.products];
 
-  //2. Metodi
-
-  //filtrare i prodotti in base al prezzo
+  // 2. Metodi
+  // Funzione che applica il filtro per prezzo
   filterByPrice(min: number, max: number): Product[] {
     return this.products.filter(
       (product) => product.price >= min && product.price <= max
     );
   }
 
-  // applicazione filtro attraverso l evento click
+  // Funzione che applica il filtro
   applyFilter(): void {
-    this.filteredProducts= this.filterByPrice(this.minPrice, this.maxPrice)
+    this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
   }
 }
