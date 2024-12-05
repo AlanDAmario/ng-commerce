@@ -88,7 +88,7 @@ export class ShopComponent {
       }
     }
   }
-
+// ottieni totale dal carrello
   getTotal(): number {
     return this.cart.reduce(
       (total, item) => total + item.price * item.quantity,
