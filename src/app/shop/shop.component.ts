@@ -8,6 +8,11 @@ interface Product {
   price: number;
 }
 
+//interfaccia carrello
+interface CartProduct extends Product {
+  quantity: number;
+}
+
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
@@ -35,14 +40,11 @@ export class ShopComponent {
       price: 200,
     },
   ];
-
   // Impostiamo i valori di default per i filtri
   minPrice: number = 0;
   maxPrice: number = 1200; // Aggiunto anche il massimo (se vuoi gestirlo)
-
   // Lista dei prodotti filtrati (inizialmente uguale a tutti i prodotti)
   filteredProducts: Product[] = [...this.products];
-
   // 2. Metodi
   // Funzione che applica il filtro per prezzo
   filterByPrice(min: number, max: number): Product[] {
@@ -50,9 +52,21 @@ export class ShopComponent {
       (product) => product.price >= min && product.price <= max
     );
   }
-
   // Funzione che applica il filtro
   applyFilter(): void {
     this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  //Carrello
+  cart: CartProduct[] = [];
+//aggiungiamo un item al carrello
+  addToCArt(product: Product): void {
+    const existingProduct = this.cart.find((item) => item.id === product.id);
+    if (existingProduct) {
+      existingProduct.quantity++;
+    } else {
+      this.cart.push({ ...product, quantity: 1 });
+    }
   }
 }
