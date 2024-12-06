@@ -1,17 +1,7 @@
 import { Component } from '@angular/core';
+import { Product } from '../models/product';
 
 // Definiamo l'interfaccia per la tipizzazione dei prodotti
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-}
-
-//interfaccia carrello
-interface CartProduct extends Product {
-  quantity: number;
-}
 
 @Component({
   selector: 'app-shop',
@@ -55,44 +45,5 @@ export class ShopComponent {
   // Funzione che applica il filtro
   applyFilter(): void {
     this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
-  }
-
-  ////////////////////////////////////////////////////////////////////
-  //Carrello
-  cart: CartProduct[] = [];
-  //aggiungiamo un item al carrello
-  addToCart(product: Product): void {
-    const existingProduct = this.cart.find((item) => item.id === product.id);
-    if (existingProduct) {
-      existingProduct.quantity++;
-    } else {
-      this.cart.push({ ...product, quantity: 1 });
-    }
-  }
-
-  //rimuovi item dal carrello
-  removeFromCart(product: CartProduct): void {
-    const existingProductCart = this.cart.find(
-      (item) => item.id === product.id
-    );
-    if (existingProductCart) {
-      //se la quantità è maggiore di uno
-      if (existingProductCart.quantity > 1) {
-        existingProductCart.quantity--;
-      } else {
-        //se l a quantità è 1
-        const indexCart = this.cart.findIndex((item) => item.id === product.id);
-        if (indexCart !== -1) {
-          this.cart.splice(indexCart, 1);
-        }
-      }
-    }
-  }
-// ottieni totale dal carrello
-  getTotal(): number {
-    return this.cart.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
   }
 }
