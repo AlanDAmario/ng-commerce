@@ -20,5 +20,16 @@ export class CartService {
     return this.cartSubject.asObservable();
   }
   //aggiungiamo un item al carrello
+  //il parametro product è un oggetto che rappresenta il prodotto che l'utente vuole aggiungere, Product è il modello da seguire (id,price, ecc)
+  addToCart(product: Product): void {
+    // cerchiamo se il prodotto esiste già nel carrello
+    const existingProduct = this.cart.find((item) => item.id === product.id);
+    // se il prodotto selezionato è già presente allora aumentiamo il numero
+    if (existingProduct) {
+      existingProduct.quantity++;
+      //se il prodotto non è presente viene aggiunto
+    } else {
+      this.cart.push({...product, quantity: 1})
+    }
+  }
 }
-
