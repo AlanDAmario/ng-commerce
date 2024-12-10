@@ -32,7 +32,7 @@ export class CartService {
       this.cart.push({ ...product, quantity: 1 });
     }
 
-    this.cartSubject.next(this.cart)
+    this.cartSubject.next(this.cart);
   }
   //metodo per rimuovere un item dal carrello
   removeFromCart(product: Product): void {
@@ -48,7 +48,13 @@ export class CartService {
       } else {
         this.cart = this.cart.filter((item) => item.id !== product.id);
       }
-      this.cartSubject.next(this.cart)
+      this.cartSubject.next(this.cart);
     }
+  }
+
+  //metodo per rimuovere tutti gli elementi presenti nel carrello
+  clearAll() {
+    this.cart = [];
+    this.cartSubject.next(this.cart);
   }
 }
