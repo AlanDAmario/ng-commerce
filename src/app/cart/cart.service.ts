@@ -29,7 +29,26 @@ export class CartService {
       existingProduct.quantity++;
       //se il prodotto non è presente viene aggiunto
     } else {
-      this.cart.push({...product, quantity: 1})
+      this.cart.push({ ...product, quantity: 1 });
+    }
+
+    this.cartSubject.next(this.cart)
+  }
+  //metodo per rimuovere un item dal carrello
+  removeFromCart(product: Product): void {
+    const removeExistingProduct = this.cart.find(
+      (item) => item.id === product.id
+    );
+    if (removeExistingProduct) {
+      //se la quantità è maggiore di 1
+      if (removeExistingProduct.quantity > 1) {
+        removeExistingProduct.quantity--;
+        //se la quantity del prodotto è 1, rimuoviamo il prodotto dal carrello interamente
+        //usiamo il metodo filter() per creare un nuovo array che contiene tutti gli articoli tranne quello che stiamo cercando di rimuovere.
+      } else {
+        this.cart = this.cart.filter((item) => item.id !== product.id);
+      }
+      this.cartSubject.next(this.cart)
     }
   }
 }
