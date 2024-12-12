@@ -13,7 +13,27 @@ export class CartService {
   private cart: CartProduct[] = [];
   //creiamo una nuova istanza di behaviorsubject, partenndo da un array vuoto inizializzato con this.cart
   private cartSubject = new BehaviorSubject<CartProduct[]>(this.cart);
-  constructor() {}
+  //metodo per salvare il carrello nel localStorage
+  private updateLocalStorage() {
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+  }
+  //local storage
+  constructor() {
+    //verifichiamo se il carrello esiste già
+    const saveCart = localStorage.getItem('cart');
+
+    if (saveCart) {
+      //se il carrello esiste, li decodifichiamo (usando JSON.parse()) per trasformarli da stringa JSON a un oggetto JavaScript.
+      this.cart = JSON.parse(saveCart);
+      //e lo ripristiniamo nel behaviorSubject
+      this.cartSubject.next(this.cart);
+
+    } else {
+      //se il carrello non esiste, lo creiamo e lo ripristiniamo nel behaviorSubject
+      this.cart = []
+      this.cartSubject.next(this.cart);
+    }
+  }
 
   //metodo per ottenere lo stato del carrello come un Observable  getCart() {
   getCart() {
@@ -45,6 +65,8 @@ export class CartService {
     } else {
       this.cart.push({ ...product, quantity: 1 });
     }
+    //salviamo il carrello nel localStorage
+    this.updateLocalStorage();
     // aggiorniamo l observable
     this.cartSubject.next(this.cart);
   }
@@ -62,6 +84,7 @@ export class CartService {
       } else {
         this.cart = this.cart.filter((item) => item.id !== product.id);
       }
+      this.updateLocalStorage();
       this.cartSubject.next(this.cart);
     }
   }
@@ -69,6 +92,7 @@ export class CartService {
   //metodo per rimuovere tutti gli elementi presenti nel carrello
   clearAll(): void {
     this.cart = [];
+    this.updateLocalStorage();
     this.cartSubject.next(this.cart);
   }
 }
