@@ -8,4 +8,5 @@ export interface Product {
 //CartProduct: Estende Product aggiungendo la proprietà quantity per gestire la quantità di ciascun prodotto nel carrello.
 export interface CartProduct extends Product {
   quantity: number;
+  maxQuantity?: number;
 }

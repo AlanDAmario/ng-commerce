@@ -21,17 +21,31 @@ export class CartService {
   }
   //aggiungiamo un item al carrello
   //il parametro product è un oggetto che rappresenta il prodotto che l'utente vuole aggiungere, Product è il modello da seguire (id,price, ecc)
-  addToCart(product: Product): void {
+  addToCart(product: CartProduct): void {
     // cerchiamo se il prodotto esiste già nel carrello
     const existingProduct = this.cart.find((item) => item.id === product.id);
-    // se il prodotto selezionato è già presente allora aumentiamo il numero
+
+    //inizializziamo il maxquantity per poi cambiarlo successivamnete
+    let maxQuantity = 10;
+    //controllo della quantità massima dei prodotti
+    if (product.name.toLowerCase() === 'laptop') {
+      maxQuantity = 5;
+    }
+
     if (existingProduct) {
-      existingProduct.quantity++;
-      //se il prodotto non è presente viene aggiunto
+      // se il prodotto esiste già nel carrello e la quantità è inferiore al maxQuantity, aumentiamo la quantità      existingProduct.quantity++;
+      if (existingProduct.quantity < maxQuantity) {
+        existingProduct.quantity++;
+      } else {
+        alert(
+          'Hai raggiunto il limite massimo di prodotti per questo articolo'
+        );
+      }
+      //se il prodotto non esiste, viene aggiunto
     } else {
       this.cart.push({ ...product, quantity: 1 });
     }
-
+    // aggiorniamo l observable
     this.cartSubject.next(this.cart);
   }
   //metodo per rimuovere un item dal carrello
@@ -53,7 +67,7 @@ export class CartService {
   }
 
   //metodo per rimuovere tutti gli elementi presenti nel carrello
-  clearAll() {
+  clearAll(): void {
     this.cart = [];
     this.cartSubject.next(this.cart);
   }
