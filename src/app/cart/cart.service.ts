@@ -14,23 +14,40 @@ export class CartService {
   //creiamo una nuova istanza di behaviorsubject, partenndo da un array vuoto inizializzato con this.cart
   private cartSubject = new BehaviorSubject<CartProduct[]>(this.cart);
   //metodo per salvare il carrello nel localStorage
-  private updateLocalStorage() {
-    localStorage.setItem('cart', JSON.stringify(this.cart));
+  private updateLocalStorage(): void {
+    try {
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+    } catch (error) {
+      console.error(
+        'Errore durante il salvataggio del carrello nel localStorage:',
+        error
+      );
+    }
   }
   //local storage
   constructor() {
     //verifichiamo se il carrello esiste già
-    const saveCart = localStorage.getItem('cart');
+    try {
+      const saveCart = localStorage.getItem('cart');
 
-    if (saveCart) {
-      //se il carrello esiste, li decodifichiamo (usando JSON.parse()) per trasformarli da stringa JSON a un oggetto JavaScript.
-      this.cart = JSON.parse(saveCart);
-      //e lo ripristiniamo nel behaviorSubject
-      this.cartSubject.next(this.cart);
-
-    } else {
-      //se il carrello non esiste, lo creiamo e lo ripristiniamo nel behaviorSubject
-      this.cart = []
+      if (saveCart) {
+        //se il carrello esiste, li decodifichiamo (usando JSON.parse()) per trasformarli da stringa JSON a un oggetto JavaScript.
+        this.cart = JSON.parse(saveCart);
+        //e lo ripristiniamo nel behaviorSubject
+        this.cartSubject.next(this.cart);
+      } else {
+        //se il carrello non esiste, lo creiamo e lo ripristiniamo nel behaviorSubject
+        this.cart = [];
+        this.cartSubject.next(this.cart);
+      }
+    } catch (error) {
+      //se ce un errore nel recupero dei dati gestiamo l errore
+      console.error(
+        'Errore durante il recupero del carrello dal localStorege',
+        error
+      );
+      //anche con errore iniziallizza comunque un carrello vuoto
+      this.cart = [];
       this.cartSubject.next(this.cart);
     }
   }
