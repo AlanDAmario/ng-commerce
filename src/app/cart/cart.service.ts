@@ -13,6 +13,15 @@ export class CartService {
   private cart: CartProduct[] = [];
   //creiamo una nuova istanza di behaviorsubject, partenndo da un array vuoto inizializzato con this.cart
   private cartSubject = new BehaviorSubject<CartProduct[]>(this.cart);
+  //configurazione limiti delle quantità atytraverso un index signature
+  private maxAddToCart: { [key: string]: number } = {
+    laptop: 5,
+    default: 10,
+  }
+  //metodo per ottenere il limite massimo per un prodotto
+  private getMaxQuantity(productName: string): number{
+    return this.maxAddToCart[productName.toLowerCase()] || this.maxAddToCart['default'];
+  }
   //metodo per salvare il carrello nel localStorage
   private updateLocalStorage(): void {
     try {
@@ -31,7 +40,7 @@ export class CartService {
       const saveCart = localStorage.getItem('cart');
 
       if (saveCart) {
-        //se il carrello esiste, li decodifichiamo (usando JSON.parse()) per trasformarli da stringa JSON a un oggetto JavaScript.
+        //se il carrello esiste, lo decodifichiamo (usando JSON.parse()) per trasformarli da stringa JSON a un oggetto JavaScript.
         this.cart = JSON.parse(saveCart);
         //e lo ripristiniamo nel behaviorSubject
         this.cartSubject.next(this.cart);
@@ -62,12 +71,8 @@ export class CartService {
     // cerchiamo se il prodotto esiste già nel carrello
     const existingProduct = this.cart.find((item) => item.id === product.id);
 
-    //inizializziamo il maxquantity per poi cambiarlo successivamnete
-    let maxQuantity = 10;
-    //controllo della quantità massima dei prodotti
-    if (product.name.toLowerCase() === 'laptop') {
-      maxQuantity = 5;
-    }
+    // recuperiamo la quantità massima attraverso l indexsiganture creato sopra
+    const maxQuantity = this.getMaxQuantity(product.name);
 
     if (existingProduct) {
       // se il prodotto esiste già nel carrello e la quantità è inferiore al maxQuantity, aumentiamo la quantità      existingProduct.quantity++;
@@ -75,7 +80,7 @@ export class CartService {
         existingProduct.quantity++;
       } else {
         alert(
-          'Hai raggiunto il limite massimo di prodotti per questo articolo'
+          `Hai raggiunto il limite massimo di ${maxQuantity} per questo articolo`
         );
       }
       //se il prodotto non esiste, viene aggiunto
