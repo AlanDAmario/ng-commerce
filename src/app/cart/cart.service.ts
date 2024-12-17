@@ -17,10 +17,13 @@ export class CartService {
   private maxAddToCart: { [key: string]: number } = {
     laptop: 5,
     default: 10,
-  }
+  };
   //metodo per ottenere il limite massimo per un prodotto
-  private getMaxQuantity(productName: string): number{
-    return this.maxAddToCart[productName.toLowerCase()] || this.maxAddToCart['default'];
+  private getMaxQuantity(productName: string): number {
+    return (
+      this.maxAddToCart[productName.toLowerCase()] ||
+      this.maxAddToCart['default']
+    );
   }
   //metodo per salvare il carrello nel localStorage
   private updateLocalStorage(): void {
@@ -61,7 +64,7 @@ export class CartService {
     }
   }
 
-  //metodo per ottenere lo stato del carrello come un Observable  getCart() {
+  //metodo per ottenere lo stato del carrello come un Observable
   getCart() {
     return this.cartSubject.asObservable();
   }
@@ -116,5 +119,18 @@ export class CartService {
     this.cart = [];
     this.updateLocalStorage();
     this.cartSubject.next(this.cart);
+  }
+
+  //metodo per calcolare il numero totale di pezzi nel carrello
+  getTotalProduct(): number {
+    return this.cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  //metodo per calcolare il prezzo totale nel carrello
+  getTotalPrice(): number {
+    return this.cart.reduce(
+      (total, item) => total + item.quantity * item.price,
+      0
+    );
   }
 }
