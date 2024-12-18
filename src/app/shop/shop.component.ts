@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Product } from '../models/product';
+import { Product, CartProduct } from '../models/product';
+import { CartService } from '../cart/cart.service';
 
 // Definiamo l'interfaccia per la tipizzazione dei prodotti
 
