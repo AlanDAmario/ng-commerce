@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product, CartProduct } from '../models/product';
 import { CartService } from '../cart/cart.service';
 
@@ -9,7 +9,7 @@ import { CartService } from '../cart/cart.service';
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css'],
 })
-export class ShopComponent {
+export class ShopComponent implements OnInit {
   // 1. Dati fondamentali
   products: Product[] = [
     {
@@ -31,6 +31,7 @@ export class ShopComponent {
       price: 200,
     },
   ];
+
   // Impostiamo i valori di default per i filtri
   minPrice: number = 0;
   maxPrice: number = 1200; // Aggiunto anche il massimo (se vuoi gestirlo)
@@ -46,5 +47,19 @@ export class ShopComponent {
   // Funzione che applica il filtro
   applyFilter(): void {
     this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
+  }
+  ////////////////////////////////// CARRELLO ////////////////////////////////////////////////////////////////
+  //istanza di cartservice
+  constructor(private cartService: CartService) {}
+
+  //variabile per memorizzare un nuovo contenuto ovvero il numero di prodotti all interno dell icona del carrello
+  cartItemCounter: number = 0;
+  ngOnInit(): void {
+    //abbonamento al carrello quindi all observable per ottenere lo stato attuale
+    //all interno di subscribe andremo a mettere come parametro cart, che non è altro che lo stato attuale del carrello
+    this.cartService.getCart().subscribe((cart) => {
+      //salviamo all interno di cartItemCounter il numero dei pezzi nel carrello
+      this.cartItemCounter = this.cartService.getTotalProduct();
+    });
   }
 }
