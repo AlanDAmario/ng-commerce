@@ -62,4 +62,9 @@ export class ShopComponent implements OnInit {
       this.cartItemCounter = this.cartService.getTotalProduct();
     });
   }
+  //attraverso i metodi di cartService andiamo a richiamre il metodo addToCart
+  //parametro cartProduct fa riferimento all interface con l aggiunta del quantity sennò darebbe errore
+  addToCart(cartProduct: CartProduct): void{
+    this.cartService.addToCart(cartProduct)
+  }
 }
