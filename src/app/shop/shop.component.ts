@@ -64,7 +64,11 @@ export class ShopComponent implements OnInit {
   }
   //attraverso i metodi di cartService andiamo a richiamre il metodo addToCart
   //parametro cartProduct fa riferimento all interface con l aggiunta del quantity sennò darebbe errore
-  addToCart(cartProduct: CartProduct): void{
-    this.cartService.addToCart(cartProduct)
+  addToCart(cartProduct: CartProduct): void {
+    this.cartService.addToCart(cartProduct);
+  }
+  //attraverso i metodi di cartService andiamo a richiamre il metodo removeFromCart
+  removeFromCart(cartProduct: CartProduct): void {
+    this.cartService.removeFromCart(cartProduct);
   }
 }
