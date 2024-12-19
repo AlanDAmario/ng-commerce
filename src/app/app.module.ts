@@ -5,13 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShopComponent } from './shop/shop.component';
-import { CartComponent } from './cart/cart.component'; 
+import { CartComponent } from './cart/cart.component';
+import { NavbarComponent } from './navbar/navbar.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     ShopComponent,
-    CartComponent // the shop component
+    CartComponent,
+    NavbarComponent // the shop component
   ],
   imports: [
     BrowserModule,

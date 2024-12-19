@@ -68,6 +68,7 @@ export class ShopComponent implements OnInit {
     this.cartService.addToCart(cartProduct);
   }
   //attraverso i metodi di cartService andiamo a richiamre il metodo removeFromCart
+  //utilizziamo CartProduct come modello per definire la struttura dei dati 
   removeFromCart(cartProduct: CartProduct): void {
     this.cartService.removeFromCart(cartProduct);
   }
