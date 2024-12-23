@@ -6,20 +6,39 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  isHovered: boolean = false;
+  isHoveredHome: boolean = false;
+  isHoveredCart: boolean = false;
+  isHoveredShop: boolean = false;
+  isHoveredProfile: boolean = false;
 
-  onHoverHpage() {
-    this.isHovered = true;
+  //Hover home
+  onHoverHome() {
+    this.isHoveredHome = true;
   }
 
-  onHoverOutHpage() {
-    this.isHovered = false;
+  onHoverOutHome() {
+    this.isHoveredHome = false;
   }
+  //Hover shop
+  onHoverShop() {
+    this.isHoveredShop = true;
+  }
+  onHoverOutShop() {
+    this.isHoveredShop = false;
+  }
+  //Hover Cart
   onHoverCart() {
-    this.isHovered = true;
+    this.isHoveredCart = true;
   }
 
   onHoverOutCart() {
-    this.isHovered = false;
+    this.isHoveredCart = false;
+  }
+  //Hover Profile
+  onHoveredProfile() {
+    this.isHoveredProfile = true;
+  }
+  onHoverOutProfile() {
+    this.isHoveredProfile = false;
   }
 }

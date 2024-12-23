@@ -1,41 +1,56 @@
 <header>
-  <div class="px-3 py-2 text-bg-secondary border-bottom">
+  <div class="text-bg-dark border-bottom">
     <div class="container">
       <div
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
       >
-        <a
-          href="/"
-          class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
-        >
-          <svg
-            class="bi me-2"
-            width="40"
-            height="32"
-          >
-
-          </svg>
+        <a href="/" class="d-flex align-items-center my-2 my-lg-0">
+          <img src="/logo.png" alt="Logo-img" class="logo-size" />
         </a>
-
+        <form class="col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
+          <input
+            type="search"
+            class="form-control"
+            placeholder="Search..."
+            aria-label="Search"
+          />
+        </form>
         <ul
-          class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small"
+          class="nav col-6 my-2 py-4 justify-content-evenly my-md-0 text-small"
         >
           <li>
             <a
               href="#"
-              class=" nav-link text-white d-flex align-items-center"
-              (mouseover)="onHoverHpage()"
-              (mouseout)="onHoverOutHpage()"
+              class="nav-link text-white d-flex align-items-center"
+              (mouseover)="onHoverHome()"
+              (mouseout)="onHoverOutHome()"
             >
               <img
-                [src]="isHovered ? '/home.gif' : '/home.png'"
+                [src]="isHoveredHome ? '/home.gif' : '/home.png'"
                 alt="Home-Icon"
-                style="width: 24px; height: 24px"
+                class="static-icon"
+                [ngClass]="{ 'gif-active': isHoveredHome }"
               />
-              <span class="px-2">Home</span>
+              <span class="px-1">Home</span>
             </a>
           </li>
 
+          <li>
+            <a
+              href="#"
+              class="nav-link text-white d-flex align-items-center"
+              (mouseover)="onHoverShop()"
+              (mouseout)="onHoverOutShop()"
+            >
+              <img
+                [src]="isHoveredShop ? '/shop.gif' : '/shop.png'"
+                alt="Shop-Icon"
+                class="static-icon"
+                [ngClass]="{ 'gif-active': isHoveredShop }"
+              />
+              <span class="ps-2">Products</span>
+            </a>
+          </li>
           <li>
             <a
               href="#"
@@ -44,44 +59,33 @@
               (mouseout)="onHoverOutCart()"
             >
               <img
-                [src]="isHovered ? '/shopping-cart.gif' : '/shopping-cart.png'"
+                [src]="
+                  isHoveredCart ? '/shopping-cart.gif' : '/shopping-cart.png'
+                "
                 alt="Cart-Icon"
-                class="me-2"
-                style="width: 24px; height: 24px"
+                class="static-icon-cart"
+                [ngClass]="{ 'gif-active': isHoveredCart }"
               />
-              <span>Cart</span>
+              <span class="px-2">Cart</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white d-flex align-items-center">
-              <span>Products</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link text-white d-flex align-items-center">
-              <span>Profile</span>
+            <a
+              href="#"
+              class="nav-link text-white d-flex align-items-center"
+              (mouseover)="onHoveredProfile()"
+              (mouseout)="onHoverOutProfile()"
+            >
+              <img
+                [src]="isHoveredProfile ? '/profile.gif' : '/profile.png'"
+                alt="Profile-icon"
+                class="static-icon-profile"
+                [ngClass]="{ 'gif-active': isHoveredProfile }"
+              />
+              <span class="ps-1">Profile</span>
             </a>
           </li>
         </ul>
-      </div>
-    </div>
-  </div>
-  <div class="px-3 py-2 border-bottom mb-3">
-    <div class="container d-flex flex-wrap justify-content-center">
-      <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-        <input
-          type="search"
-          class="form-control"
-          placeholder="Search..."
-          aria-label="Search"
-        />
-      </form>
-
-      <div class="text-end">
-        <button type="button" class="btn btn-light text-dark me-2">
-          Login
-        </button>
-        <button type="button" class="btn btn-primary">Sign-up</button>
       </div>
     </div>
   </div>
