@@ -1,91 +1,96 @@
 <header>
   <div class="text-bg-dark border-bottom">
     <div class="container">
-      <div
-        class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
-      >
-        <a href="/" class="d-flex align-items-center my-2 my-lg-0">
-          <img src="/logo.png" alt="Logo-img" class="logo-size" />
-        </a>
-        <form class="col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
-          <input
-            type="search"
-            class="form-control"
-            placeholder="Search..."
-            aria-label="Search"
-          />
-        </form>
-        <ul
-          class="nav col-6 my-2 py-4 justify-content-evenly my-md-0 text-small"
-        >
-          <li>
-            <a
-              href="#"
-              class="nav-link text-white d-flex align-items-center"
-              (mouseover)="onHoverHome()"
-              (mouseout)="onHoverOutHome()"
-            >
-              <img
-                [src]="isHoveredHome ? '/home.gif' : '/home.png'"
-                alt="Home-Icon"
-                class="static-icon"
-                [ngClass]="{ 'gif-active': isHoveredHome }"
-              />
-              <span class="px-1">Home</span>
-            </a>
-          </li>
+      <div class="row align-items-center">
+        <!-- Colonna Logo e Form -->
+        <div class="col-6 d-flex align-items-center">
+          <!-- Logo -->
+          <a href="/" class="d-flex align-items-center my-2 my-lg-0">
+            <img src="/logo.png" alt="Logo-img" class="logo-size" />
+          </a>
+          <!-- Form -->
+          <form class="ms-3 w-50" role="search">
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Search..."
+              aria-label="Search"
+            />
+          </form>
+        </div>
 
-          <li>
-            <a
-              href="#"
-              class="nav-link text-white d-flex align-items-center"
-              (mouseover)="onHoverShop()"
-              (mouseout)="onHoverOutShop()"
-            >
-              <img
-                [src]="isHoveredShop ? '/shop.gif' : '/shop.png'"
-                alt="Shop-Icon"
-                class="static-icon"
-                [ngClass]="{ 'gif-active': isHoveredShop }"
-              />
-              <span class="ps-2">Products</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link text-white d-flex align-items-center"
-              (mouseover)="onHoverCart()"
-              (mouseout)="onHoverOutCart()"
-            >
-              <img
-                [src]="
-                  isHoveredCart ? '/shopping-cart.gif' : '/shopping-cart.png'
-                "
-                alt="Cart-Icon"
-                class="static-icon-cart"
-                [ngClass]="{ 'gif-active': isHoveredCart }"
-              />
-              <span class="px-2">Cart</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              class="nav-link text-white d-flex align-items-center"
-              (mouseover)="onHoveredProfile()"
-              (mouseout)="onHoverOutProfile()"
-            >
-              <img
-                [src]="isHoveredProfile ? '/profile.gif' : '/profile.png'"
-                alt="Profile-icon"
-                class="static-icon-profile"
-                [ngClass]="{ 'gif-active': isHoveredProfile }"
-              />
-              <span class="ps-1">Profile</span>
-            </a>
-          </li>
-        </ul>
+        <!-- Colonna Navbar -->
+        <div class="col-6">
+          <ul class="nav justify-content-end my-2 py-4 my-md-0 text-small">
+            <li>
+              <a
+                href="#"
+                class="nav-link text-white d-flex align-items-center"
+                (mouseover)="onHoverHome()"
+                (mouseout)="onHoverOutHome()"
+              >
+                <img
+                  [src]="isHoveredHome ? '/home.gif' : '/home.png'"
+                  alt="Home-Icon"
+                  class="static-icon"
+                  [ngClass]="{ 'gif-active': isHoveredHome }"
+                />
+                <span class="px-1">Home</span>
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                class="nav-link text-white d-flex align-items-center"
+                (mouseover)="onHoverShop()"
+                (mouseout)="onHoverOutShop()"
+              >
+                <img
+                  [src]="isHoveredShop ? '/shop.gif' : '/shop.png'"
+                  alt="Shop-Icon"
+                  class="static-icon"
+                  [ngClass]="{ 'gif-active': isHoveredShop }"
+                />
+                <span class="ps-2">Products</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link text-white d-flex align-items-center"
+                (mouseover)="onHoverCart()"
+                (mouseout)="onHoverOutCart()"
+              >
+                <img
+                  [src]="
+                    isHoveredCart ? '/shopping-cart.gif' : '/shopping-cart.png'
+                  "
+                  alt="Cart-Icon"
+                  class="static-icon-cart"
+                  [ngClass]="{ 'gif-active': isHoveredCart }"
+                />
+                <span class="px-2">Cart</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link text-white d-flex align-items-center"
+                (mouseover)="onHoveredProfile()"
+                (mouseout)="onHoverOutProfile()"
+              >
+                <img
+                  [src]="isHoveredProfile ? '/profile.gif' : '/profile.png'"
+                  alt="Profile-icon"
+                  class="static-icon-profile"
+                  [ngClass]="{ 'gif-active': isHoveredProfile }"
+                />
+                <span class="ps-1">Profile</span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
