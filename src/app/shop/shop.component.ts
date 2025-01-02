@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product, CartProduct } from '../models/product';
-import { CartService } from '../cart/cart.service';
+import { CartService } from '../services/cart/cart.service';
 
 // Definiamo l'interfaccia per la tipizzazione dei prodotti
 
@@ -11,26 +11,7 @@ import { CartService } from '../cart/cart.service';
 })
 export class ShopComponent implements OnInit {
   // 1. Dati fondamentali
-  products: Product[] = [
-    {
-      id: 1,
-      name: 'Laptop',
-      description: 'Un laptop potente e leggero.',
-      price: 1200,
-    },
-    {
-      id: 2,
-      name: 'Smartphone',
-      description: 'Un telefono con fotocamera avanzata.',
-      price: 800,
-    },
-    {
-      id: 3,
-      name: 'Cuffie',
-      description: 'Cuffie con cancellazione del rumore.',
-      price: 200,
-    },
-  ];
+  products: Product[] = [];
 
   // Impostiamo i valori di default per i filtri
   minPrice: number = 0;
@@ -68,7 +49,7 @@ export class ShopComponent implements OnInit {
     this.cartService.addToCart(cartProduct);
   }
   //attraverso i metodi di cartService andiamo a richiamre il metodo removeFromCart
-  //utilizziamo CartProduct come modello per definire la struttura dei dati 
+  //utilizziamo CartProduct come modello per definire la struttura dei dati
   removeFromCart(cartProduct: CartProduct): void {
     this.cartService.removeFromCart(cartProduct);
   }

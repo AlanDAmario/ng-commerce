@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShopComponent } from './shop/shop.component';
-import { CartComponent } from './cart/cart.component';
+import { CartComponent } from './services/cart/cart.component';
 import { NavbarComponent } from './navbar/navbar.component'; 
 
 

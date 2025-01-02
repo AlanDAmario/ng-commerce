@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // observable per gestire in maniera asincrona la rsiposta dell api
 import { Observable } from 'rxjs';
-import { Product } from './models/product';
+import { Product } from '../../models/product';
 
 @Injectable({
   //indichiamo che il
@@ -16,9 +16,9 @@ export class ProductService {
   private apiUrl = 'https://fakestoreapi.com/products';
 
   //costruttore del servizio. HttpClient è iniettato automaticamente da Angular per eseguire le richieste HTTP
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   //metodo che restituisce una Observable<Product[]> che rappresenta una lista di tutti i prodotti
-  getProducts(): Observable<Product[]>{
+  getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
   //impaginazione per i prodotti
@@ -34,7 +34,7 @@ export class ProductService {
     const pageUrl = `${this.apiUrl}?limit=${limit}&offset=${offset}`;
     //attraverso il metodo get di httpclient facciamo una richiesta http get dell url paginato ovvero pageurl
     //specifichiamo <Product[]> per indicare l array di oggetti di tipo product
-    //restituendo l observable che metterà i dati dei prodotti una volta che la richiesta sraà completata 
+    //restituendo l observable che metterà i dati dei prodotti una volta che la richiesta sraà completata
     return this.http.get<Product[]>(pageUrl);
   }
 }
