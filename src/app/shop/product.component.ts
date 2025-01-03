@@ -5,11 +5,11 @@ import { CartService } from '../services/cart/cart.service';
 // Definiamo l'interfaccia per la tipizzazione dei prodotti
 
 @Component({
-  selector: 'app-shop',
-  templateUrl: './shop.component.html',
-  styleUrls: ['./shop.component.css'],
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.css'],
 })
-export class ShopComponent implements OnInit {
+export class ProductComponent implements OnInit {
   // 1. Dati fondamentali
   products: Product[] = [];
 
