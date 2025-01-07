@@ -13,14 +13,15 @@ export class ProductComponent implements OnInit {
   // Array per memorizzare i prodotti da visualizzare nel componente
   products: Product[] = [];
   // Array per memorizzare i prodotti filtrati (inizialmente uguale a products)
-  filteredProducts: Product[] = [...this.products];
+  filteredProducts: Product[] = [];
   // Filtri per la selezione di un range di prezzo
   minPrice: number = 0;
   maxPrice: number = 1200;
   // Parametri per l'impaginazione
-  productsForPage: number = 4; // Numero di prodotti per pagina
+  productsForPage: number = 6; // Numero di prodotti per pagina
   currentPage: number = 1; // Pagina attuale
   totalPages: number = 0; // Numero totale di pagine, sarà calcolato dinamicamente
+  totalProducts: number = 0; // Numero totale di prodotti (ottenuto dall'API)
   pages: number[] = []; // Array per memorizzare i numeri di pagina
   // Contatore per il numero di articoli nel carrello
   cartItemCounter: number = 0;
@@ -36,67 +37,38 @@ export class ProductComponent implements OnInit {
     this.loadProducts(this.productsForPage, this.currentPage);
 
     // Abbonamento al carrello per tenere traccia del numero di articoli nel carrello
-    this.cartService.getCart().subscribe((cart) => {
+    this.cartService.getCart().subscribe(() => {
       // Salviamo il numero totale di prodotti nel carrello
       this.cartItemCounter = this.cartService.getTotalProduct();
     });
-  }
-
-  // Metodo per applicare il filtro per prezzo
-  filterByPrice(min: number, max: number): Product[] {
-    // Filtriamo i prodotti in base al prezzo minimo e massimo
-    return this.products.filter(
-      (product) => product.price >= min && product.price <= max
-    );
-  }
-
-  // Funzione per applicare il filtro dei prodotti
-  applyFilter(): void {
-    // Applichiamo il filtro per il range di prezzo
-    this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
-  }
-
-  ///////////////////////////////////////////
-  // Metodi per gestire il carrello (aggiunta e rimozione) //
-  ///////////////////////////////////////////
-
-  // Aggiungi un prodotto al carrello
-  addToCart(product: Product): void {
-    // Creiamo un oggetto CartProduct con una quantità di 1
-    const cartProduct: CartProduct = { ...product, quantity: 1 };
-    // Aggiungiamo il prodotto al carrello tramite il servizio
-    this.cartService.addToCart(cartProduct);
-  }
-
-  // Rimuovi un prodotto dal carrello
-  removeFromCart(cartProduct: CartProduct): void {
-    // Rimuoviamo il prodotto dal carrello
-    this.cartService.removeFromCart(cartProduct);
   }
 
   ///////////////////////////////////////////
   // Metodo per caricare i prodotti con impaginazione //
   ///////////////////////////////////////////
 
+  /**
+   * Metodo per caricare i prodotti dalla DummyJSON API con paginazione lato server.
+   * @param limit Numero di prodotti per pagina.
+   * @param page Numero della pagina corrente.
+   */
   loadProducts(limit: number, page: number): void {
-    // Chiamiamo il metodo paginateProducts per ottenere i prodotti per la pagina corrente
-    this.productService.paginateProducts(limit, page).subscribe((products) => {
-      // Quando riceviamo i prodotti, li salviamo in this.products e this.filteredProducts
-      this.products = products; // Prodotti per la pagina corrente
-      this.filteredProducts = products; // Prodotti filtrati (in questo caso non ci sono filtri applicati inizialmente)
+    this.productService.paginateProducts(limit, page).subscribe((response) => {
+      this.products = response; // Prodotti per la pagina corrente
+      this.filteredProducts = response; // Inizialmente non applichiamo filtri
 
-      // Calcoliamo il numero totale di prodotti (stiamo usando un valore statico, ma potrebbe essere dinamico se l'API lo supporta)
-      const totalProducts: number = 20; // Questo valore dovrebbe venire dalla risposta dell'API se disponibile
-
-      // Calcoliamo il numero totale di pagine in base al numero di prodotti per pagina
-      this.totalPages = Math.ceil(totalProducts / limit);
-
-      // Aggiorniamo l'array delle pagine
-      this.updatePages();
+      // Otteniamo il numero totale di prodotti dall'API
+      this.productService.getProducts().subscribe((allProducts) => {
+        this.totalProducts = allProducts.length; // Numero totale di prodotti
+        this.totalPages = Math.ceil(this.totalProducts / limit); // Calcola il numero di pagine
+        this.updatePages(); // Aggiorniamo l'array delle pagine
+      });
     });
   }
 
-  // Funzione per aggiornare l'array delle pagine (da 1 a totalPages)
+  /**
+   * Metodo per aggiornare l'array delle pagine.
+   */
   updatePages(): void {
     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
@@ -105,45 +77,82 @@ export class ProductComponent implements OnInit {
   // Funzioni per navigare tra le pagine //
   ///////////////////////////////////////////
 
-  // Cambia la pagina
+  /**
+   * Metodo per cambiare pagina.
+   * @param newPage Numero della nuova pagina.
+   */
   changePage(newPage: number): void {
     if (newPage > 0 && newPage <= this.totalPages) {
       this.currentPage = newPage; // Impostiamo la nuova pagina
-      this.loadProducts(this.productsForPage, this.currentPage); // Carichiamo i prodotti per la nuova pagina
+      this.loadProducts(this.productsForPage, this.currentPage); // Ricarichiamo i prodotti
     }
   }
 
-  // Funzione per andare alla pagina successiva
+  /**
+   * Metodo per navigare alla pagina successiva.
+   */
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.changePage(this.currentPage + 1);
     }
   }
 
-  // Funzione per tornare alla pagina precedente
+  /**
+   * Metodo per tornare alla pagina precedente.
+   */
   previousPage(): void {
     if (this.currentPage > 1) {
       this.changePage(this.currentPage - 1);
     }
   }
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  // Esempio di logica per stabilire quale icona usare (full, half, empty)
+
+  ///////////////////////////////////////////
+  // Metodo per filtrare i prodotti per prezzo //
+  ///////////////////////////////////////////
+
+  /**
+   * Metodo per applicare un filtro per il range di prezzo.
+   */
+  applyFilter(): void {
+    this.filteredProducts = this.products.filter(
+      (product) =>
+        product.price >= this.minPrice && product.price <= this.maxPrice
+    );
+  }
+
+  ///////////////////////////////////////////
+  // Metodi per gestire il carrello //
+  ///////////////////////////////////////////
+
+  /**
+   * Aggiungere un prodotto al carrello.
+   * @param product Prodotto da aggiungere.
+   */
+  addToCart(product: Product): void {
+    const cartProduct: CartProduct = { ...product, quantity: 1 }; // Creiamo un oggetto per il carrello
+    this.cartService.addToCart(cartProduct); // Aggiungiamo al carrello
+  }
+
+  ///////////////////////////////////////////
+  // Metodo per generare le icone delle stelle //
+  ///////////////////////////////////////////
+
+  /**
+   * Metodo per determinare l'icona della stella in base al rating.
+   * @param star Numero della stella corrente (1-5).
+   * @param rate Valutazione del prodotto.
+   * @returns Classe CSS per l'icona della stella.
+   */
   getStarIcon(star: number, rate: number): string {
-    const floorRate = Math.floor(rate); // parte intera, e.g. 3
-    const decimal = rate - floorRate; // parte decimale, e.g. 0.7
+    const floorRate = Math.floor(rate); // Parte intera del rating
+    const decimal = rate - floorRate; // Parte decimale del rating
 
     if (star <= floorRate) {
-      // Stella piena (completamente colorata)
-      return 'fas fa-star text-warning';
-      // (fas = font awesome solid)
+      return 'fas fa-star text-warning'; // Stella piena
     } else if (star === floorRate + 1 && decimal >= 0.5) {
-      // Mezza stella
-      return 'fas fa-star-half-alt text-warning';
+      return 'fas fa-star-half-alt text-warning'; // Mezza stella
     } else {
-      // Stella vuota (solo contorno)
-      return 'far fa-star text-muted';
-      // (far = font awesome regular)
+      return 'far fa-star text-muted'; // Stella vuota
     }
   }
 }

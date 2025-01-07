@@ -10,10 +10,10 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ProductService {
-  // URL base dell'API per ottenere i dati
-  private apiUrl = 'https://fakestoreapi.com/products';
+  // URL base dell'API DummyJSON per ottenere i prodotti
+  private apiUrl = 'https://dummyjson.com/products';
 
-  // Variabile per memorizzare i prodotti già caricati, per evitare chiamate multiple
+  // Variabile per memorizzare i prodotti già caricati per evitare chiamate multiple
   private productsCache: Product[] = []; // Inizializziamo la cache come array vuoto
 
   // Costruttore del servizio. Angular inietta automaticamente HttpClient per eseguire le richieste HTTP.
@@ -21,8 +21,8 @@ export class ProductService {
 
   /**
    * Metodo per ottenere tutti i prodotti dall'API.
-   * Se l'API restituisce un array di oggetti con un array 'products', possiamo combinare tutti i prodotti in un unico array usando `flatMap`.
-   * @returns Observable<Product[]> - Lista completa di prodotti combinati.
+   * Se l'API DummyJSON restituisce un oggetto con una proprietà 'products', accediamo a essa.
+   * @returns Observable<Product[]> - Lista completa di prodotti.
    */
   getProducts(): Observable<Product[]> {
     // Verifica se i dati sono già stati caricati, altrimenti effettua la richiesta
@@ -31,36 +31,32 @@ export class ProductService {
     }
 
     // Carica i dati solo se non sono già nella cache
-    return this.http.get<Product[]>(this.apiUrl).pipe(
+    return this.http.get<any>(this.apiUrl).pipe(
       map((response) => {
-        this.productsCache = response; // Memorizza i dati nella cache
-        return response; // Restituisci la risposta
+        // Accediamo alla proprietà 'products' nella risposta dell'API
+        this.productsCache = response.products;
+        return response.products; // Restituisci l'array di prodotti
       })
     );
   }
 
   /**
-   * Metodo per ottenere i prodotti per una pagina specifica con impaginazione.
-   * La paginazione viene eseguita sul lato client, selezionando i prodotti dall'array combinato.
+   * Metodo per ottenere i prodotti per una pagina specifica con impaginazione lato server.
    * @param limit Numero di prodotti per pagina.
    * @param page Numero della pagina corrente.
    * @returns Observable<Product[]> - Lista di prodotti per la pagina specificata.
    */
   paginateProducts(limit: number, page: number): Observable<Product[]> {
-    // Verifica che i parametri limit e page siano validi (numeri positivi).
-    if (page < 1 || limit < 1) {
-      throw new Error('Page and limit must be greater than 0');
-    }
+    // Calcoliamo lo skip per la paginazione (quanti prodotti saltare)
+    const skip = (page - 1) * limit;
 
-    // Otteniamo la lista completa di prodotti e applichiamo la logica di paginazione.
-    return this.getProducts().pipe(
-      map((allProducts) => {
-        // Calcoliamo l'indice iniziale e finale per la pagina corrente.
-        const startIndex = (page - 1) * limit;
-        const endIndex = startIndex + limit;
+    // URL con parametri di paginazione (limit e skip)
+    const paginatedUrl = `${this.apiUrl}?limit=${limit}&skip=${skip}`;
 
-        // Selezioniamo i prodotti tra gli indici calcolati.
-        return allProducts.slice(startIndex, endIndex);
+    // Effettua la richiesta con i parametri di paginazione
+    return this.http.get<any>(paginatedUrl).pipe(
+      map((response) => {
+        return response.products; // Restituisce i prodotti per la pagina richiesta
       })
     );
   }

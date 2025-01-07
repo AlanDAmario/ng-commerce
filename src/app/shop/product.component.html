@@ -1,10 +1,13 @@
 <div class="container my-5">
   <!-- Barra dei filtri -->
-  <div class="row mb-4 ">
-    <div class="col-md-6">
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <!-- Etichetta per il filtro di prezzo -->
       <label for="priceRange" class="form-label fs-5 fw-bold">
         Price Range: ${{ minPrice }} - ${{ maxPrice }}
       </label>
+
+      <!-- Filtro range di prezzo -->
       <input
         type="range"
         class="form-range"
@@ -19,49 +22,83 @@
 
   <!-- Elenco prodotti -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-  <div *ngFor="let product of filteredProducts" class="col">
-    <div class="card h-100">
-      <img
-        [src]="product.image"
-        class="card-img-top"
-        [alt]="product.title"
-      />
-      <div class="card-body d-flex flex-column">
+    <div *ngFor="let product of filteredProducts" class="col">
+      <!-- Card del prodotto -->
+      <div class="card h-100">
+        <!-- Immagine principale del prodotto -->
+        <img
+          [src]="product.thumbnail"
+          class="card-img-top"
+          [alt]="product.title"
+        />
+        <div class="card-body d-flex flex-column">
+          <!-- Titolo del prodotto -->
+          <h5 class="card-title fs-5 text-truncate">{{ product.title }}</h5>
 
-        <!-- Titolo del prodotto -->
-        <h5 class="card-title fs-5 text-truncate">{{ product.title }}</h5>
+          <!-- Marca -->
+          <p class="card-subtitle text-muted mb-2">{{ product.brand }}</p>
 
-        <!-- Sezione Rating: 5 stelle + numero di recensioni -->
-        <div class="my-2 d-flex align-items-center">
-          <!-- Generiamo 5 stelle con un array [1,2,3,4,5] -->
-          <div *ngFor="let star of [1,2,3,4,5]">
-            <i [ngClass]="getStarIcon(star, product.rating.rate)"></i>
+          <!-- Sezione rating con stelle -->
+          <div class="my-2 d-flex align-items-center">
+            <!-- Ciclo per le 5 stelle -->
+            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+              <i class="fas" [ngClass]="getStarIcon(star, product.rating)"></i>
+            </ng-container>
+
+            <!-- Conteggio recensioni -->
+            <span class="ms-2 text-muted"> ({{ product.rating }} rating) </span>
           </div>
 
-          <!-- (facoltativo) - conteggio recensioni -->
-          <span class="ms-2 text-muted">
-            ({{ product.rating.count }} reviews)
-          </span>
+          <!-- Prezzo con sconto (se presente) -->
+          <div>
+            <span class="text-danger fw-bold">
+              {{
+                product.price -
+                  product.price * (product.discountPercentage / 100) | currency
+              }}
+            </span>
+            <span
+              *ngIf="product.discountPercentage > 0"
+              class="text-muted ms-2"
+            >
+              <del>{{ product.price | currency }}</del>
+              <small class="text-success"
+                >-{{ product.discountPercentage }}%</small
+              >
+            </span>
+          </div>
+
+          <!-- Disponibilità in stock -->
+          <p
+            class="text-muted mt-2"
+            [ngClass]="{ 'text-danger': product.stock < 10 }"
+          >
+            {{
+              product.stock > 0
+                ? product.stock < 10
+                  ? "Low Stock"
+                  : "In Stock"
+                : "Out of Stock"
+            }}
+          </p>
+
+          <!-- Pulsante per aggiungere al carrello -->
+          <button
+            class="btn btn-primary mt-auto"
+            [disabled]="product.stock === 0"
+            (click)="addToCart(product)"
+          >
+            Add to Cart
+          </button>
         </div>
-
-        <!-- Prezzo del prodotto -->
-        <p class="card-text text-muted mb-4">
-          {{ product.price | currency }}
-        </p>
-
-        <!-- Pulsante "Add to Cart" -->
-        <button class="btn btn-primary mt-auto" (click)="addToCart(product)">
-          Add to Cart
-        </button>
       </div>
     </div>
   </div>
-</div>
-
 
   <!-- Paginazione -->
   <nav class="mt-5" aria-label="Page navigation">
     <ul class="pagination justify-content-center">
+      <!-- Pulsante "Previous" -->
       <li class="page-item" [class.disabled]="currentPage === 1">
         <button
           class="page-link"
@@ -71,6 +108,8 @@
           Previous
         </button>
       </li>
+
+      <!-- Numeri di pagina -->
       <li *ngFor="let page of pages" class="page-item">
         <button
           class="page-link"
@@ -80,6 +119,8 @@
           {{ page }}
         </button>
       </li>
+
+      <!-- Pulsante "Next" -->
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <button
           class="page-link"
