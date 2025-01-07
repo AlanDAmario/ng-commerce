@@ -1,40 +1,67 @@
-//decoratore che permette ad angular di inniettare il servizio in altri componenti
+// Importiamo i decoratori necessari per Angular e i moduli per eseguire le richieste HTTP
 import { Injectable } from '@angular/core';
-//httpclient necessario per effettuare richieste http
 import { HttpClient } from '@angular/common/http';
-// observable per gestire in maniera asincrona la rsiposta dell api
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Product } from '../../models/product';
+import { map } from 'rxjs/operators';
 
 @Injectable({
-  //indichiamo che il
-  //  servizio sarà disponibile globalmente nell'app, senza bisogno di dichiararlo esplicitamente in ogni modulo
+  // Indichiamo che questo servizio sarà disponibile globalmente in tutta l'app
   providedIn: 'root',
 })
 export class ProductService {
-  //qui inseriremo l url che utilizzeremo per richiamare tutti i prodotti
+  // URL base dell'API per ottenere i dati
   private apiUrl = 'https://fakestoreapi.com/products';
 
-  //costruttore del servizio. HttpClient è iniettato automaticamente da Angular per eseguire le richieste HTTP
+  // Variabile per memorizzare i prodotti già caricati, per evitare chiamate multiple
+  private productsCache: Product[] = []; // Inizializziamo la cache come array vuoto
+
+  // Costruttore del servizio. Angular inietta automaticamente HttpClient per eseguire le richieste HTTP.
   constructor(private http: HttpClient) {}
-  //metodo che restituisce una Observable<Product[]> che rappresenta una lista di tutti i prodotti
+
+  /**
+   * Metodo per ottenere tutti i prodotti dall'API.
+   * Se l'API restituisce un array di oggetti con un array 'products', possiamo combinare tutti i prodotti in un unico array usando `flatMap`.
+   * @returns Observable<Product[]> - Lista completa di prodotti combinati.
+   */
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    // Verifica se i dati sono già stati caricati, altrimenti effettua la richiesta
+    if (this.productsCache.length > 0) {
+      return of(this.productsCache); // Restituisci i dati già memorizzati
+    }
+
+    // Carica i dati solo se non sono già nella cache
+    return this.http.get<Product[]>(this.apiUrl).pipe(
+      map((response) => {
+        this.productsCache = response; // Memorizza i dati nella cache
+        return response; // Restituisci la risposta
+      })
+    );
   }
-  //impaginazione per i prodotti
+
+  /**
+   * Metodo per ottenere i prodotti per una pagina specifica con impaginazione.
+   * La paginazione viene eseguita sul lato client, selezionando i prodotti dall'array combinato.
+   * @param limit Numero di prodotti per pagina.
+   * @param page Numero della pagina corrente.
+   * @returns Observable<Product[]> - Lista di prodotti per la pagina specificata.
+   */
   paginateProducts(limit: number, page: number): Observable<Product[]> {
-    // aggiungiamo l offset (il numero di prodotti da saltare per mostrare i risultati della pagina corrente ) in base alla pagina corrente
-    //per la prima pagina (page = 1), l'offset è 0, quindi mostrerà i primi limit prodotti.
-    //per la seconda pagina (page = 2), l'offset è limit, quindi mostrerà i prodotti dal (limit + 1) al (limit * 2).
-    //per la terza pagina, l'offset è (2 * limit), e così via.
-    const offset = (page - 1) * limit;
-    //costruiamo dinamicamente l URL con i parametri li it e offset
-    //?limit=${limit}: Specifica il numero massimo di prodotti da restituire.
-    //&offset=${offset}: Specifica da quale prodotto partire.
-    const pageUrl = `${this.apiUrl}?limit=${limit}&offset=${offset}`;
-    //attraverso il metodo get di httpclient facciamo una richiesta http get dell url paginato ovvero pageurl
-    //specifichiamo <Product[]> per indicare l array di oggetti di tipo product
-    //restituendo l observable che metterà i dati dei prodotti una volta che la richiesta sraà completata
-    return this.http.get<Product[]>(pageUrl);
+    // Verifica che i parametri limit e page siano validi (numeri positivi).
+    if (page < 1 || limit < 1) {
+      throw new Error('Page and limit must be greater than 0');
+    }
+
+    // Otteniamo la lista completa di prodotti e applichiamo la logica di paginazione.
+    return this.getProducts().pipe(
+      map((allProducts) => {
+        // Calcoliamo l'indice iniziale e finale per la pagina corrente.
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        // Selezioniamo i prodotti tra gli indici calcolati.
+        return allProducts.slice(startIndex, endIndex);
+      })
+    );
   }
 }

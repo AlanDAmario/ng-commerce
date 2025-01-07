@@ -2,111 +2,125 @@ import { Component, OnInit } from '@angular/core';
 import { Product, CartProduct } from '../models/product';
 import { CartService } from '../services/cart/cart.service';
 import { ProductService } from '../services/api/product.service';
-// Definiamo l'interfaccia per la tipizzazione dei prodotti
 
+// Il decoratore indica che questa è una classe di tipo componente
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
-  // array di oggetti vuota , che sarà la lista dei prodotti da visualizzare nel componente
+  // Array per memorizzare i prodotti da visualizzare nel componente
   products: Product[] = [];
-  // Lista dei prodotti filtrati (inizialmente uguale a tutti i prodotti)
+  // Array per memorizzare i prodotti filtrati (inizialmente uguale a products)
   filteredProducts: Product[] = [...this.products];
-  // Impostiamo i valori di default per i filtri
+  // Filtri per la selezione di un range di prezzo
   minPrice: number = 0;
-  maxPrice: number = 5000;
-  // Valori di default per la impaginazione
-  productsForPage: number = 12; // Numero di prodotti per pagina
+  maxPrice: number = 1200;
+  // Parametri per l'impaginazione
+  productsForPage: number = 4; // Numero di prodotti per pagina
   currentPage: number = 1; // Pagina attuale
-  totalPages: number = 0; // Numero totale delle pagine, modificambile dinamicamente
-  //variabile per memorizzare un nuovo contenuto ovvero il numero di prodotti all interno dell icona del carrello
+  totalPages: number = 0; // Numero totale di pagine, sarà calcolato dinamicamente
+  pages: number[] = []; // Array per memorizzare i numeri di pagina
+  // Contatore per il numero di articoli nel carrello
   cartItemCounter: number = 0;
-  ///////////////////////////////////METODI per filtrare//////////////////////////////////////////////////////////////////////
-  // Funzione che applica il filtro per prezzo
-  filterByPrice(min: number, max: number): Product[] {
-    return this.products.filter(
-      (product) => product.price >= min && product.price <= max
-    );
-  }
-  // Funzione che applica il filtro
-  applyFilter(): void {
-    this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
-  }
-  //istanze
+
+  // Costruttore per l'iniezione delle dipendenze
   constructor(
-    //aggiungendo le dipendenze attraverso la dependecy injections possiamo accedere a tutti i metodi definiti all interno di esse
     private cartService: CartService,
     private productService: ProductService
   ) {}
 
   ngOnInit(): void {
-    ////////////////////////////////IMPAGINAZIONE E OTTENIMENTO PRODOTTI DALL API////////////////////////////////
-    // Richiama il metodo loadProducts all'avvio del componente
+    // Carichiamo i prodotti al caricamento del componente
     this.loadProducts(this.productsForPage, this.currentPage);
-    ////////////////////////////////////////////
-    //////// CARRELLO //////////
-    ////////////////////////////////////////////
 
-    //abbonamento al carrello quindi all observable per ottenere lo stato attuale
-    //all interno di subscribe andremo a mettere come parametro cart, che non è altro che lo stato attuale del carrello
+    // Abbonamento al carrello per tenere traccia del numero di articoli nel carrello
     this.cartService.getCart().subscribe((cart) => {
-      //salviamo all interno di cartItemCounter il numero dei pezzi nel carrello
+      // Salviamo il numero totale di prodotti nel carrello
       this.cartItemCounter = this.cartService.getTotalProduct();
     });
   }
-  //attraverso i metodi di cartService andiamo a richiamre il metodo addToCart
-  //parametro cartProduct fa riferimento all interface con l aggiunta del quantity sennò darebbe errore
-  addToCart(cartProduct: CartProduct): void {
+
+  // Metodo per applicare il filtro per prezzo
+  filterByPrice(min: number, max: number): Product[] {
+    // Filtriamo i prodotti in base al prezzo minimo e massimo
+    return this.products.filter(
+      (product) => product.price >= min && product.price <= max
+    );
+  }
+
+  // Funzione per applicare il filtro dei prodotti
+  applyFilter(): void {
+    // Applichiamo il filtro per il range di prezzo
+    this.filteredProducts = this.filterByPrice(this.minPrice, this.maxPrice);
+  }
+
+  ///////////////////////////////////////////
+  // Metodi per gestire il carrello (aggiunta e rimozione) //
+  ///////////////////////////////////////////
+
+  // Aggiungi un prodotto al carrello
+  addToCart(product: Product): void {
+    // Creiamo un oggetto CartProduct con una quantità di 1
+    const cartProduct: CartProduct = { ...product, quantity: 1 };
+    // Aggiungiamo il prodotto al carrello tramite il servizio
     this.cartService.addToCart(cartProduct);
   }
-  //attraverso i metodi di cartService andiamo a richiamre il metodo removeFromCart
-  //utilizziamo CartProduct come modello per definire la struttura dei dati
+
+  // Rimuovi un prodotto dal carrello
   removeFromCart(cartProduct: CartProduct): void {
+    // Rimuoviamo il prodotto dal carrello
     this.cartService.removeFromCart(cartProduct);
   }
+
   ///////////////////////////////////////////
-  //METODO PER RECUPERARE I PRODOTTI DALL API//
+  // Metodo per caricare i prodotti con impaginazione //
   ///////////////////////////////////////////
 
   loadProducts(limit: number, page: number): void {
-    // Chiamiamo il metodo paginateProducts() del servizio ProductService
-    // Passiamo i valori di "limit" e "page" come parametri per indicare
-    // quanti prodotti recuperare e da quale pagina iniziare
-    this.productService
-      .paginateProducts(limit, page)
-      // subscribe() serve per "abbonarsi" all'Observable restituito da paginateProducts()
-      // In pratica, stiamo aspettando che l'API risponda con i dati
-      .subscribe((productsApi) => {
-        // Quando l'API risponde con i dati, li salviamo in "this.products"
-        // In questo modo, i prodotti recuperati vengono salvati nell'array "products"
-        this.products = productsApi;
-        // Copiamo i dati anche nell'array "filteredProducts"
-        // Questo array serve per applicare filtri sui prodotti
-        this.filteredProducts = productsApi;
+    // Chiamiamo il metodo paginateProducts per ottenere i prodotti per la pagina corrente
+    this.productService.paginateProducts(limit, page).subscribe((products) => {
+      // Quando riceviamo i prodotti, li salviamo in this.products e this.filteredProducts
+      this.products = products; // Prodotti per la pagina corrente
+      this.filteredProducts = products; // Prodotti filtrati (in questo caso non ci sono filtri applicati inizialmente)
 
-        // Calcoliamo il numero totale delle pagine disponibili.
-        // Supponendo che "productsApi.length" rappresenti il numero totale di prodotti ricevuti,
-        // dividiamo questo valore per il numero di prodotti per pagina ("limit") e arrotondiamo per eccesso.
-        this.totalPages = Math.ceil(productsApi.length / this.productsForPage);
-      });
+      // Calcoliamo il numero totale di prodotti (stiamo usando un valore statico, ma potrebbe essere dinamico se l'API lo supporta)
+      const totalProducts: number = 20; // Questo valore dovrebbe venire dalla risposta dell'API se disponibile
+
+      // Calcoliamo il numero totale di pagine in base al numero di prodotti per pagina
+      this.totalPages = Math.ceil(totalProducts / limit);
+
+      // Aggiorniamo l'array delle pagine
+      this.updatePages();
+    });
   }
-  //metodo per cambiare pagina
+
+  // Funzione per aggiornare l'array delle pagine (da 1 a totalPages)
+  updatePages(): void {
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  ///////////////////////////////////////////
+  // Funzioni per navigare tra le pagine //
+  ///////////////////////////////////////////
+
+  // Cambia la pagina
   changePage(newPage: number): void {
     if (newPage > 0 && newPage <= this.totalPages) {
-      this.currentPage = newPage;
-      this.loadProducts(this.productsForPage, this.currentPage);
+      this.currentPage = newPage; // Impostiamo la nuova pagina
+      this.loadProducts(this.productsForPage, this.currentPage); // Carichiamo i prodotti per la nuova pagina
     }
   }
-  // Metodo per andare alla pagina successiva
+
+  // Funzione per andare alla pagina successiva
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.changePage(this.currentPage + 1);
     }
   }
 
-  // Metodo per tornare alla pagina precedente
+  // Funzione per tornare alla pagina precedente
   previousPage(): void {
     if (this.currentPage > 1) {
       this.changePage(this.currentPage - 1);
