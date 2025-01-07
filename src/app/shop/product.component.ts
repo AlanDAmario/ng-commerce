@@ -126,4 +126,24 @@ export class ProductComponent implements OnInit {
       this.changePage(this.currentPage - 1);
     }
   }
+  ////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
+  // Esempio di logica per stabilire quale icona usare (full, half, empty)
+  getStarIcon(star: number, rate: number): string {
+    const floorRate = Math.floor(rate); // parte intera, e.g. 3
+    const decimal = rate - floorRate; // parte decimale, e.g. 0.7
+
+    if (star <= floorRate) {
+      // Stella piena (completamente colorata)
+      return 'fas fa-star text-warning';
+      // (fas = font awesome solid)
+    } else if (star === floorRate + 1 && decimal >= 0.5) {
+      // Mezza stella
+      return 'fas fa-star-half-alt text-warning';
+    } else {
+      // Stella vuota (solo contorno)
+      return 'far fa-star text-muted';
+      // (far = font awesome regular)
+    }
+  }
 }

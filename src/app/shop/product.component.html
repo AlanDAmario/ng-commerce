@@ -1,10 +1,10 @@
-<div class="container mt-4">
+<div class="container my-5">
   <!-- Barra dei filtri -->
-  <div class="row mb-4">
+  <div class="row mb-4 ">
     <div class="col-md-6">
-      <label for="priceRange" class="form-label fs-5 fw-bold"
-        >Price Range: ${{ minPrice }} - ${{ maxPrice }}</label
-      >
+      <label for="priceRange" class="form-label fs-5 fw-bold">
+        Price Range: ${{ minPrice }} - ${{ maxPrice }}
+      </label>
       <input
         type="range"
         class="form-range"
@@ -19,26 +19,49 @@
 
   <!-- Elenco prodotti -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <div *ngFor="let product of filteredProducts" class="col">
-      <div class="card h-100 shadow-sm">
-        <img [src]="product.image" class="card-img-top" [alt]="product.title" />
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title fs-5 text-truncate">{{ product.title }}</h5>
-          <p class="card-text text-muted mb-4">
-            {{ product.price | currency }}
-          </p>
-          <button class="btn btn-primary mt-auto" (click)="addToCart(product)">
-            Add to Cart
-          </button>
+  <div *ngFor="let product of filteredProducts" class="col">
+    <div class="card h-100">
+      <img
+        [src]="product.image"
+        class="card-img-top"
+        [alt]="product.title"
+      />
+      <div class="card-body d-flex flex-column">
+
+        <!-- Titolo del prodotto -->
+        <h5 class="card-title fs-5 text-truncate">{{ product.title }}</h5>
+
+        <!-- Sezione Rating: 5 stelle + numero di recensioni -->
+        <div class="my-2 d-flex align-items-center">
+          <!-- Generiamo 5 stelle con un array [1,2,3,4,5] -->
+          <div *ngFor="let star of [1,2,3,4,5]">
+            <i [ngClass]="getStarIcon(star, product.rating.rate)"></i>
+          </div>
+
+          <!-- (facoltativo) - conteggio recensioni -->
+          <span class="ms-2 text-muted">
+            ({{ product.rating.count }} reviews)
+          </span>
         </div>
+
+        <!-- Prezzo del prodotto -->
+        <p class="card-text text-muted mb-4">
+          {{ product.price | currency }}
+        </p>
+
+        <!-- Pulsante "Add to Cart" -->
+        <button class="btn btn-primary mt-auto" (click)="addToCart(product)">
+          Add to Cart
+        </button>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Paginazione -->
-  <nav class="mt-4" aria-label="Page navigation">
+  <nav class="mt-5" aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-      <!-- Pulsante "Previous" disabilitato quando siamo sulla prima pagina -->
       <li class="page-item" [class.disabled]="currentPage === 1">
         <button
           class="page-link"
@@ -48,8 +71,6 @@
           Previous
         </button>
       </li>
-
-      <!-- Pagine numeriche generate dinamicamente -->
       <li *ngFor="let page of pages" class="page-item">
         <button
           class="page-link"
@@ -59,8 +80,6 @@
           {{ page }}
         </button>
       </li>
-
-      <!-- Pulsante "Next" disabilitato quando siamo sull'ultima pagina -->
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <button
           class="page-link"
