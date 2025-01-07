@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //product importato da models
-import { Product, CartProduct } from '../models/product';
+import { Product, CartProduct } from '../../models/product';
 //serve per tener traccia dello stato corrente del carrello
 import { BehaviorSubject } from 'rxjs';
 
@@ -75,7 +75,7 @@ export class CartService {
     const existingProduct = this.cart.find((item) => item.id === product.id);
 
     // recuperiamo la quantità massima attraverso l indexsiganture creato sopra
-    const maxQuantity = this.getMaxQuantity(product.name);
+    const maxQuantity = this.getMaxQuantity(product.title);
 
     if (existingProduct) {
       // se il prodotto esiste già nel carrello e la quantità è inferiore al maxQuantity, aumentiamo la quantità      existingProduct.quantity++;
