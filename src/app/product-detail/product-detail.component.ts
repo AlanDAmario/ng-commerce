@@ -14,6 +14,8 @@ export class ProductDetailComponent implements OnInit {
   productId: number | null = null;
   //memorizzaare i dettagli del prodotto
   productDetails: any = null;
+  //memorizziamo tutti i prodotti nel carosello
+  allProducts: Product[] = [];
   //innittiamo nelle Activatedroute come dipendeza, consentendo di accedere ai dati di routing
   constructor(
     private route: ActivatedRoute, // per gestire i parametri dell url
@@ -28,6 +30,7 @@ export class ProductDetailComponent implements OnInit {
     // .get('id'): prende il valore del parametro 'id' (esempio: /product/123 → id=123)
     // Number(): converte il valore da stringa a numero (se id fosse "123", diventa 123)
     this.productDetailsApi();
+    this.loadAllProducts();
   }
   //carichhiamo i dettagli del prodotto attraverso la chimata api
   productDetailsApi(): void {
@@ -66,6 +69,17 @@ export class ProductDetailComponent implements OnInit {
       // Stampiamo un errore in console per aiutare con il debug.
       console.error('ID del prodotto non valido');
     }
+  }
+  loadAllProducts(): void {
+    const apiUrl = 'https://dummyjson.com/products';
+    this.http.get<{ products: Product[] }>(apiUrl).subscribe({
+      next: (data) => {
+        this.allProducts = data.products; // Salva tutti i prodotti
+      },
+      error: (err) => {
+        console.error('Errore nel caricamento dei prodotti:', err);
+      },
+    });
   }
   /**
    * Aggiungere un prodotto al carrello.

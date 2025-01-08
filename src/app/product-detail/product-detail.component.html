@@ -123,6 +123,79 @@
     </div>
   </div>
 </div>
+<div class="container-auto  bg-body-tertiary">
+  
+  <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Indicatori -->
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#productCarousel"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        *ngFor="let product of allProducts.slice(1); let i = index"
+        type="button"
+        data-bs-target="#productCarousel"
+        [attr.data-bs-slide-to]="i + 1"
+        [attr.aria-label]="'Slide ' + (i + 2)"
+      ></button>
+    </div>
+
+    <!-- Contenuto del carosello -->
+    <div class="carousel-inner">
+      <div
+        *ngFor="let product of allProducts; let i = index"
+        class="carousel-item"
+        [class.active]="i === 0"
+      >
+        <a [routerLink]="['/product', product.id]" class="text-decoration-none">
+          <div class="d-flex justify-content-center">
+            <div class="card my-4" style="width: 18rem;">
+              <img
+                [src]="product.images[0]"
+                [alt]="product.title"
+                class="card-img-top"
+                style="height: 200px; object-fit: contain;"
+              />
+              <div class="card-body text-center">
+                <h6 class="card-title">{{ product.title }}</h6>
+                <p class="card-text text-danger fw-bold">
+                  {{ product.price | currency }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+   <!-- Controlli -->
+<button
+  class="carousel-control-prev"
+  type="button"
+  data-bs-target="#productCarousel"
+  data-bs-slide="prev"
+>
+  <span aria-hidden="true" class="fw-bold fs-3">&lt;</span> <!-- Freccia sinistra -->
+  <span class="visually-hidden">Previous</span>
+</button>
+<button
+  class="carousel-control-next"
+  type="button"
+  data-bs-target="#productCarousel"
+  data-bs-slide="next"
+>
+  <span aria-hidden="true" class="fw-bold fs-3">&gt;</span> <!-- Freccia destra -->
+  <span class="visually-hidden">Next</span>
+</button>
+
+  </div>
+</div>
+
 
 <!-- Placeholder per caricamento -->
 <ng-template #loading>
