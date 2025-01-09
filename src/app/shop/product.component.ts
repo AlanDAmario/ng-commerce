@@ -3,93 +3,102 @@ import { Product, CartProduct } from '../models/product';
 import { CartService } from '../services/cart/cart.service';
 import { ProductService } from '../services/api/product.service';
 
-// Il decoratore indica che questa è una classe di tipo componente
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
-  // Array per memorizzare i prodotti da visualizzare nel componente
-  products: Product[] = [];
-  // Array per memorizzare i prodotti filtrati (inizialmente uguale a products)
+  // Tutti i prodotti caricati dall'API
+  allProducts: Product[] = [];
+  // Prodotti visibili nella pagina corrente (con filtri e paginazione)
   filteredProducts: Product[] = [];
-  // Filtri per la selezione di un range di prezzo
+  // Valori per il filtro di prezzo
   minPrice: number = 0;
-  maxPrice: number = 1200;
-  // Parametri per l'impaginazione
+  maxPrice: number = 0; // Impostato dinamicamente in base ai prezzi massimi dall'API
+  // Paginazione
   productsForPage: number = 6; // Numero di prodotti per pagina
   currentPage: number = 1; // Pagina attuale
-  totalPages: number = 0; // Numero totale di pagine, sarà calcolato dinamicamente
-  totalProducts: number = 0; // Numero totale di prodotti (ottenuto dall'API)
-  pages: number[] = []; // Array per memorizzare i numeri di pagina
-  // Contatore per il numero di articoli nel carrello
+  totalPages: number = 0; // Numero totale di pagine
+  pages: number[] = []; // Array per navigare tra le pagine
+  // Contatore del numero di prodotti nel carrello
   cartItemCounter: number = 0;
 
-  // Costruttore per l'iniezione delle dipendenze
   constructor(
-    private cartService: CartService,
-    private productService: ProductService
+    private cartService: CartService, // Servizio per gestire il carrello
+    private productService: ProductService // Servizio per chiamare l'API dei prodotti
   ) {}
 
   ngOnInit(): void {
-    // Carichiamo i prodotti al caricamento del componente
-    this.loadProducts(this.productsForPage, this.currentPage);
+    // Caricamento iniziale di tutti i prodotti
+    this.loadAllProducts();
 
-    // Abbonamento al carrello per tenere traccia del numero di articoli nel carrello
+    // Sottoscrizione per aggiornare il contatore dei prodotti nel carrello
     this.cartService.getCart().subscribe(() => {
-      // Salviamo il numero totale di prodotti nel carrello
       this.cartItemCounter = this.cartService.getTotalProduct();
     });
   }
 
-  ///////////////////////////////////////////
-  // Metodo per caricare i prodotti con impaginazione //
-  ///////////////////////////////////////////
-
   /**
-   * Metodo per caricare i prodotti dalla DummyJSON API con paginazione lato server.
-   * @param limit Numero di prodotti per pagina.
-   * @param page Numero della pagina corrente.
+   * Carica tutti i prodotti dall'API e configura i dati per il filtro e la paginazione.
    */
-  loadProducts(limit: number, page: number): void {
-    this.productService.paginateProducts(limit, page).subscribe((response) => {
-      this.products = response; // Prodotti per la pagina corrente
-      this.filteredProducts = response; // Inizialmente non applichiamo filtri
-
-      // Otteniamo il numero totale di prodotti dall'API
-      this.productService.getProducts().subscribe((allProducts) => {
-        this.totalProducts = allProducts.length; // Numero totale di prodotti
-        this.totalPages = Math.ceil(this.totalProducts / limit); // Calcola il numero di pagine
-        this.updatePages(); // Aggiorniamo l'array delle pagine
-      });
+  loadAllProducts(): void {
+    this.productService.getProducts().subscribe((products) => {
+      this.allProducts = products; // Salva tutti i prodotti
+      this.maxPrice = Math.max(...products.map((p) => p.price)); // Determina il prezzo massimo
+      this.applyFilter(); // Applica il filtro iniziale
+      this.updatePagination(); // Calcola la paginazione
     });
   }
 
   /**
-   * Metodo per aggiornare l'array delle pagine.
+   * Aggiorna la lista dei prodotti filtrati in base al prezzo e aggiorna la paginazione.
    */
-  updatePages(): void {
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  applyFilter(): void {
+    // Filtra i prodotti in base al range di prezzo
+    const filtered = this.allProducts.filter(
+      (product) =>
+        product.price >= this.minPrice && product.price <= this.maxPrice
+    );
+
+    // Aggiorna la paginazione con i prodotti filtrati
+    this.updatePagination(filtered);
   }
 
-  ///////////////////////////////////////////
-  // Funzioni per navigare tra le pagine //
-  ///////////////////////////////////////////
+  /**
+   * Calcola le pagine e aggiorna i prodotti visibili.
+   * @param filteredProducts Prodotti filtrati per la paginazione.
+   */
+  updatePagination(filteredProducts: Product[] = this.allProducts): void {
+    this.totalPages = Math.ceil(filteredProducts.length / this.productsForPage); // Numero totale di pagine
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1); // Array delle pagine
+    this.showPage(this.currentPage, filteredProducts); // Mostra i prodotti della pagina corrente
+  }
 
   /**
-   * Metodo per cambiare pagina.
+   * Mostra i prodotti per una pagina specifica.
+   * @param page Numero della pagina.
+   * @param filteredProducts Prodotti filtrati per questa pagina.
+   */
+  showPage(page: number, filteredProducts: Product[]): void {
+    const startIndex = (page - 1) * this.productsForPage; // Indice iniziale dei prodotti
+    const endIndex = startIndex + this.productsForPage; // Indice finale
+    this.filteredProducts = filteredProducts.slice(startIndex, endIndex); // Prodotti visibili
+  }
+
+  /**
+   * Naviga a una pagina specifica.
    * @param newPage Numero della nuova pagina.
    */
   changePage(newPage: number): void {
     if (newPage > 0 && newPage <= this.totalPages) {
-      this.currentPage = newPage; // Impostiamo la nuova pagina
-      this.loadProducts(this.productsForPage, this.currentPage); // Ricarichiamo i prodotti
+      this.currentPage = newPage; // Aggiorna la pagina corrente
+      this.showPage(this.currentPage, this.allProducts); // Mostra i prodotti della nuova pagina
     }
   }
 
   /**
-   * Metodo per navigare alla pagina successiva.
+   * Naviga alla pagina successiva.
    */
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
@@ -98,7 +107,7 @@ export class ProductComponent implements OnInit {
   }
 
   /**
-   * Metodo per tornare alla pagina precedente.
+   * Torna alla pagina precedente.
    */
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -106,46 +115,24 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  ///////////////////////////////////////////
-  // Metodo per filtrare i prodotti per prezzo //
-  ///////////////////////////////////////////
-
   /**
-   * Metodo per applicare un filtro per il range di prezzo.
-   */
-  applyFilter(): void {
-    this.filteredProducts = this.products.filter(
-      (product) =>
-        product.price >= this.minPrice && product.price <= this.maxPrice
-    );
-  }
-
-  ///////////////////////////////////////////
-  // Metodi per gestire il carrello //
-  ///////////////////////////////////////////
-
-  /**
-   * Aggiungere un prodotto al carrello.
+   * Aggiunge un prodotto al carrello.
    * @param product Prodotto da aggiungere.
    */
   addToCart(product: Product): void {
-    const cartProduct: CartProduct = { ...product, quantity: 1 }; // Creiamo un oggetto per il carrello
-    this.cartService.addToCart(cartProduct); // Aggiungiamo al carrello
+    const cartProduct: CartProduct = { ...product, quantity: 1 };
+    this.cartService.addToCart(cartProduct); // Aggiungi al carrello
   }
 
-  ///////////////////////////////////////////
-  // Metodo per generare le icone delle stelle //
-  ///////////////////////////////////////////
-
   /**
-   * Metodo per determinare l'icona della stella in base al rating.
+   * Determina l'icona delle stelle in base alla valutazione.
    * @param star Numero della stella corrente (1-5).
    * @param rate Valutazione del prodotto.
-   * @returns Classe CSS per l'icona della stella.
+   * @returns Classe CSS per l'icona.
    */
   getStarIcon(star: number, rate: number): string {
-    const floorRate = Math.floor(rate); // Parte intera del rating
-    const decimal = rate - floorRate; // Parte decimale del rating
+    const floorRate = Math.floor(rate);
+    const decimal = rate - floorRate;
 
     if (star <= floorRate) {
       return 'fas fa-star text-warning'; // Stella piena

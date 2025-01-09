@@ -1,7 +1,7 @@
 <div class="container my-5" *ngIf="filteredProducts.length > 0; else loading">
   <!-- Barra dei filtri -->
   <div class="row mb-4">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <!-- Etichetta per il filtro di prezzo -->
       <label for="priceRange" class="form-label fs-5 fw-bold">
         Price Range: ${{ minPrice }} - ${{ maxPrice }}
@@ -13,7 +13,7 @@
         class="form-range"
         id="priceRange"
         [min]="0"
-        [max]="1200"
+        [max]="maxPrice"
         [(ngModel)]="minPrice"
         (change)="applyFilter()"
       />

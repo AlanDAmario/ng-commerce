@@ -15,7 +15,6 @@ export class CartService {
   private cartSubject = new BehaviorSubject<CartProduct[]>(this.cart);
   //configurazione limiti delle quantità atytraverso un index signature
   private maxAddToCart: { [key: string]: number } = {
-    laptop: 5,
     default: 10,
   };
   //metodo per ottenere il limite massimo per un prodotto
