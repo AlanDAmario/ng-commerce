@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
-import { CartProduct } from '../../models/product'; 
+import { CartProduct } from '../../models/product';
+import { Modal } from 'bootstrap';
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -47,10 +49,16 @@ export class CartComponent implements OnInit {
     this.cartService.removeFromCart(item); // Rimuove l'oggetto dal carrello
     this.updateCartSummary(); // Aggiorna i totali
   }
+
+  /**
+   * Rimuove tutte le quantità di un prodotto dal carrello.
+   * @param item Il prodotto da rimuovere completamente.
+   */
   removeAllFromCart(item: CartProduct): void {
-    // Usa il metodo removeFromCart del servizio per rimuovere completamente il prodotto
-    this.cartService.removeAllFromCart(item);
+    this.cartService.removeAllFromCart(item); // Utilizza il metodo del servizio per rimuovere completamente il prodotto
+    this.updateCartSummary(); // Aggiorna i totali
   }
+
   /**
    * Svuota completamente il carrello.
    */
@@ -71,5 +79,50 @@ export class CartComponent implements OnInit {
       (total, item) => total + item.quantity * item.price,
       0
     );
+  }
+
+  /**
+   * Simula il processo di pagamento.
+   */
+  confirmPayment(): void {
+    // Recupera l'elemento della modale
+    const modalElement = document.getElementById('paymentModal');
+    if (modalElement) {
+      // Usa il modulo Modal importato per gestire la modale
+      const modalInstance =
+        Modal.getInstance(modalElement) || new Modal(modalElement);
+      modalInstance.hide(); // Chiude la modale programmaticamente
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Rimuove manualmente il backdrop residuo
+      }
+    }
+
+    // Simula il processo di pagamento con un ritardo
+    setTimeout(() => {
+      // Aggiunge una notifica personalizzata alla pagina
+      const alertContainer = document.getElementById('alert-container');
+      if (alertContainer) {
+        // Crea dinamicamente un elemento HTML per l'alert
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-success alert-dismissible fade show'; // Classi Bootstrap per lo stile
+        alert.role = 'alert'; // Ruolo ARIA per accessibilità
+        alert.innerHTML = `
+        <strong>Payment Successful!</strong> Thank you for your purchase.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+
+        // Aggiunge l'alert al contenitore specificato
+        alertContainer.appendChild(alert);
+
+        // Rimuove automaticamente l'alert dopo 5 secondi
+        setTimeout(() => {
+          alert.remove();
+        }, 5000);
+      }
+
+      // Svuota il carrello dopo il pagamento
+      this.clearCart();
+    }, 1000); // Ritardo simulato di 1 secondo
   }
 }
