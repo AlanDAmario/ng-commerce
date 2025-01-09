@@ -122,10 +122,19 @@ export class CartService {
   }
 
   //metodo per calcolare il numero totale di pezzi nel carrello
+  removeAllFromCart(product: Product): void {
+    // Filtra il carrello per escludere il prodotto specificato
+    this.cart = this.cart.filter((item) => item.id !== product.id);
+
+    // Aggiorna il localStorage
+    this.updateLocalStorage();
+
+    // Aggiorna il BehaviorSubject con il nuovo stato del carrello
+    this.cartSubject.next(this.cart);
+  }
   getTotalProduct(): number {
     return this.cart.reduce((total, item) => total + item.quantity, 0);
   }
-
   //metodo per calcolare il prezzo totale nel carrello
   getTotalPrice(): number {
     return this.cart.reduce(

@@ -22,87 +22,94 @@
 
   <!-- Elenco prodotti -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <div *ngFor="let product of filteredProducts" class="col">
-      <!-- Link dinamico che avvolge l'intera card -->
-      <a [routerLink]="['/product', product.id]" class="text-decoration-none text-dark">
-        <!-- Card del prodotto -->
-        <div class="card h-100">
-          <!-- Immagine principale del prodotto -->
-          <img
-            [src]="product.thumbnail"
-            class="card-img-top"
-            [alt]="product.title"
-          />
-          <div class="card-body d-flex flex-column">
-            <!-- Titolo del prodotto -->
-            <h5 class="card-title fs-5 text-truncate">{{ product.title }}</h5>
+  <div *ngFor="let product of filteredProducts" class="col">
+    <!-- Card del prodotto -->
+    <div class="card h-100 position-relative">
+      <!-- Link dinamico per la card -->
+      <a
+        [routerLink]="['/product', product.id]"
+        class="text-decoration-none text-dark"
+        style="text-decoration: none;"
+      >
+        <!-- Immagine principale del prodotto -->
+        <img
+          [src]="product.thumbnail"
+          class="card-img-top"
+          [alt]="product.title"
+        />
+        <div class="card-body d-flex flex-column">
+          <!-- Titolo del prodotto -->
+          <h5 class="card-title fs-5 text-truncate">{{ product.title }}</h5>
 
-            <!-- Marca -->
-            <p class="card-subtitle text-muted mb-2">{{ product.brand }}</p>
+          <!-- Marca -->
+          <p class="card-subtitle text-muted mb-2">{{ product.brand }}</p>
 
-            <!-- Sezione rating con stelle -->
-            <div class="my-2 d-flex align-items-center">
-              <!-- Ciclo per le 5 stelle -->
-              <div *ngFor="let star of [1, 2, 3, 4, 5]">
-                <i
-                  class="fas"
-                  [ngClass]="getStarIcon(star, product.rating)"
-                ></i>
-              </div>
-
-              <!-- Conteggio recensioni -->
-              <span class="ms-2 text-muted">
-                ({{ product.rating }} rating)
-              </span>
+          <!-- Sezione rating con stelle -->
+          <div class="my-2 d-flex align-items-center">
+            <!-- Ciclo per le 5 stelle -->
+            <div *ngFor="let star of [1, 2, 3, 4, 5]">
+              <i
+                class="fas"
+                [ngClass]="getStarIcon(star, product.rating)"
+              ></i>
             </div>
-
-            <!-- Prezzo con sconto (se presente) -->
-            <div>
-              <span class="text-danger fw-bold">
-                {{
-                  product.price -
-                    product.price * (product.discountPercentage / 100)
-                    | currency
-                }}
-              </span>
-              <span
-                *ngIf="product.discountPercentage > 0"
-                class="text-muted ms-2"
-              >
-                <del>{{ product.price | currency }}</del>
-                <small class="text-success"
-                  >-{{ product.discountPercentage }}%</small
-                >
-              </span>
-            </div>
-
-            <!-- Disponibilità in stock -->
-            <p
-              class="text-muted mt-2"
-              [ngClass]="{ 'text-danger': product.stock < 10 }"
-            >
-              {{
-                product.stock > 0
-                  ? product.stock < 10
-                    ? "Low Stock"
-                    : "In Stock"
-                  : "Out of Stock"
-              }}
-            </p>
-
-            <!-- Pulsante per aggiungere al carrello -->
-            <button
-              class="btn btn-primary mt-auto"
-              [disabled]="product.stock === 0"
-              (click)="addToCart(product); $event.stopPropagation()"
-            >
-              Add to Cart
-            </button>
+            <!-- Conteggio recensioni -->
+            <span class="ms-2 text-muted">
+              ({{ product.rating }} rating)
+            </span>
           </div>
+
+          <!-- Prezzo con sconto (se presente) -->
+          <div>
+            <span class="text-danger fw-bold">
+              {{
+                product.price - 
+                  product.price * (product.discountPercentage / 100) | currency
+              }}
+            </span>
+            <span
+              *ngIf="product.discountPercentage > 0"
+              class="text-muted ms-2"
+            >
+              <del>{{ product.price | currency }}</del>
+              <small class="text-success">
+                -{{ product.discountPercentage }}%
+              </small>
+            </span>
+          </div>
+
+          <!-- Disponibilità in stock -->
+          <p
+            class="mt-3 fw-bold"
+            [ngClass]="{
+              'text-success': product.stock >= 10,
+              'text-warning': product.stock < 10 && product.stock > 0
+            }"
+          >
+            {{
+              product.stock > 0
+                ? product.stock < 10
+                  ? "Low Stock"
+                  : "In Stock"
+                : "Out of Stock"
+            }}
+          </p>
         </div>
       </a>
+
+      <!-- Pulsante per aggiungere al carrello -->
+      <button
+        class="btn btn-primary btn-add-cart mt-2 position-absolute bottom-0 end-0 me-2 mb-2"
+        [disabled]="product.stock === 0"
+        (click)="addToCart(product)"
+      >
+        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+      </button>
     </div>
   </div>
+</div>
+
+
 
   <!-- Paginazione -->
   <nav class="mt-5" aria-label="Page navigation">

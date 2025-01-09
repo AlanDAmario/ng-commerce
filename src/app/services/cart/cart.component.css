@@ -1,0 +1,47 @@
+/* Stile per i titoli */
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile per la tabella */
+.table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.table th {
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+/* Stile per i pulsanti */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Stile per il messaggio di carrello vuoto */
+.alert-warning {
+  background-color: #fff3cd;
+}
+
+.alert-warning i {
+  color: #ffc107;
+}

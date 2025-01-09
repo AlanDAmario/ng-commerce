@@ -1,16 +1,26 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { CartService } from '../services/cart/cart.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  isHoveredHome: boolean = false;
-  isHoveredCart: boolean = false;
-  isHoveredShop: boolean = false;
-  isHoveredProfile: boolean = false;
+  cartCount: number = 0; // Contatore degli articoli nel carrello
 
+  // Variabili per l'hover degli elementi
+  isHoveredHome = false;
+  isHoveredShop = false;
+  isHoveredCart = false;
+  isHoveredProfile = false;
+constructor(private cartService: CartService){}
+  ngOnInit(): void {
+    // Sottoscriviti agli aggiornamenti del carrello
+    this.cartService.getCart().subscribe((cart) => {
+      // Calcola il numero totale di articoli nel carrello
+      this.cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    });
+  }
   //Hover home
   onHoverHome() {
     this.isHoveredHome = true;

@@ -26,3 +26,24 @@
 .logo-size:hover {
   transform: scale(1.1); /* Ingrandisce leggermente il logo */
 }
+.badge {
+  font-size: 0.75rem; /* Dimensione del testo */
+  padding: 0.4em 0.6em; /* Spaziatura interna */
+  width: 1.5rem; /* Larghezza fissa */
+  height: 1.5rem; /* Altezza fissa */
+  display: flex; /* Per centrare il contenuto */
+  justify-content: center; /* Centra il numero orizzontalmente */
+  align-items: center; /* Centra il numero verticalmente */
+  border-radius: 50%; /* Forma circolare */
+}
+
+.static-icon-cart {
+  width: 24px; /* Larghezza dell'icona del carrello */
+  height: 24px; /* Altezza dell'icona del carrello */
+}
+
+.custom-start {
+  right: -8px; /* Sposta leggermente verso destra */
+  top: 0px; /* Allinea verticalmente */
+  transform: translate(50%, -50%); /* Mantiene il badge sopra l'icona */
+}

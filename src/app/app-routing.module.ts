@@ -5,7 +5,8 @@ import { CartComponent } from './services/cart/cart.component';
 import { ProductComponent } from './shop/product.component';
 const routes: Routes = [
   { path: 'product/:id', component: ProductDetailComponent },
-  {path: 'products', component:ProductComponent}
+  { path: 'products', component: ProductComponent },
+  {path: 'cart', component: CartComponent}
   // Rotte aggiuntive (esempio: home page)
   // { path: '', redirectTo: '/home', pathMatch: 'full' }, // Reindirizza alla home page
   // { path: '**', redirectTo: '/home' } // Gestione di rotte non valide

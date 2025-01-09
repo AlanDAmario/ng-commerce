@@ -59,8 +59,8 @@
             </li>
             <li>
               <a
-                href="#"
-                class="nav-link text-white d-flex align-items-center"
+                [routerLink]="['cart']"
+                class="nav-link text-white d-flex align-items-center position-relative"
                 (mouseover)="onHoverCart()"
                 (mouseout)="onHoverOutCart()"
               >
@@ -73,8 +73,16 @@
                   [ngClass]="{ 'gif-active': isHoveredCart }"
                 />
                 <span class="px-2">Cart</span>
+                <!-- Badge dinamico -->
+                <span
+                  *ngIf="cartCount > 0"
+                  class="position-absolute top-1 custom-start translate-middle badge rounded-pill bg-danger "
+                >
+                  {{ cartCount }}
+                </span>
               </a>
             </li>
+
             <li>
               <a
                 href="#"

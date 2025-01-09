@@ -63,3 +63,23 @@ input[type="range"].form-range::-webkit-slider-thumb {
   color: #fff ;
   background-color: #5d5d5c ;
 }
+/* Stile per il pulsante Add to Cart */
+.btn-add-cart {
+  background: linear-gradient(to right, #007bff, #0056b3); /* Gradiente blu */
+  color: white; /* Colore del testo */
+  border: none; /* Nessun bordo */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Ombra */
+  font-weight: bold; /* Testo in grassetto */
+  transition: all 0.3s ease-in-out; /* Transizione su hover */
+}
+
+.btn-add-cart:hover {
+  background: linear-gradient(to right, #0056b3, #003d7a); /* Gradiente più scuro */
+ 
+}
+
+.btn-add-cart:disabled {
+  background: #d3d3d3; /* Grigio per stato disabilitato */
+  color: #888; /* Testo grigio */
+  cursor: not-allowed; /* Icona di divieto */
+}
