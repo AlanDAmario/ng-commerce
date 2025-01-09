@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CartService } from '../services/cart/cart.service';
 import { Product, CartProduct } from '../models/product';
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,6 +17,8 @@ export class ProductDetailComponent implements OnInit {
   productDetails: any = null;
   //memorizziamo tutti i prodotti nel carosello
   allProducts: Product[] = [];
+  //immagine selezionata per il modal
+  selectedImage: string | null = null;
   //innittiamo nelle Activatedroute come dipendeza, consentendo di accedere ai dati di routing
   constructor(
     private route: ActivatedRoute, // per gestire i parametri dell url
@@ -102,5 +105,18 @@ export class ProductDetailComponent implements OnInit {
     } else {
       return 'far fa-star text-muted'; // Stella vuota
     }
+  }
+  //modale
+  openImageModal(image: string): void {
+    this.selectedImage = image; // Imposta l'immagine selezionata
+    const modalElement = document.getElementById('imageModal'); // Ottieni il riferimento al modal
+    if (modalElement) {
+      const modal = new Modal(modalElement); // Crea un'istanza del modal
+      modal.show(); // Mostra il modal
+    }
+  }
+
+  changeModalImage(image: string): void {
+    this.selectedImage = image; // Aggiorna solo l'immagine mostrata nel modal
   }
 }

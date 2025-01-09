@@ -21,7 +21,11 @@ export interface Product {
   };
   warrantyInformation?: string; // Informazioni sulla garanzia (opzionale)
   shippingInformation?: string; // Informazioni sulla spedizione (opzionale)
+  sku?: string; // Codice SKU del prodotto (opzionale)
+  availabilityStatus?: string; // Stato di disponibilità (opzionale)
+  minimumOrderQuantity?: number; // Quantità minima acquistabile (opzionale)
 }
+
 
 // CartProduct: Estende Product aggiungendo la proprietà quantity
 // per gestire la quantità di ciascun prodotto nel carrello.
