@@ -101,39 +101,57 @@
 
   <!-- Modal per visualizzazione immagini -->
   <div
-    class="modal fade"
-    id="imageModal"
-    tabindex="-1"
-    aria-labelledby="imageModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body p-0">
-          <img
-            [src]="selectedImage"
-            alt="Selected"
-            class="img-fluid w-100"
-            style="max-height: 90vh; object-fit: contain"
-          />
-        </div>
-        <div class="modal-footer justify-content-center">
-          <img
-            *ngFor="let image of productDetails.images"
-            [src]="image"
-            class="img-thumbnail"
-            style="
-              width: 60px;
-              height: 60px;
-              object-fit: cover;
-              cursor: pointer;
-            "
-            (click)="changeModalImage(image)"
-          />
-        </div>
+  class="modal fade"
+  id="imageModal"
+  tabindex="-1"
+  aria-labelledby="imageModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-0 position-relative">
+        <!-- Immagine principale -->
+        <img
+          [src]="selectedImage"
+          alt="Selected"
+          class="img-fluid w-100"
+          style="max-height: 90vh; object-fit: contain"
+        />
+
+        <!-- Pulsante 'Indietro' -->
+        <button
+          type="button"
+          class="btn btn-light position-absolute top-50 start-0 translate-middle-y"
+          style="z-index: 10"
+          (click)="changeModalImage('prev')"
+        >
+          &lt; <!-- Simbolo per Indietro -->
+        </button>
+
+        <!-- Pulsante 'Avanti' -->
+        <button
+          type="button"
+          class="btn btn-light position-absolute top-50 end-0 translate-middle-y"
+          style="z-index: 10"
+          (click)="changeModalImage('next')"
+        >
+          &gt; <!-- Simbolo per Avanti -->
+        </button>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <!-- Miniature delle immagini -->
+        <img
+          *ngFor="let image of productDetails?.images"
+          [src]="image"
+          class="img-thumbnail"
+          style="width: 60px; height: 60px; object-fit: cover; cursor: pointer"
+          (click)="openImageModal(image)"
+        />
       </div>
     </div>
   </div>
+</div>
+
 </div>
 <!-- carosello -->
 <div class="container-auto bg-body-tertiary">

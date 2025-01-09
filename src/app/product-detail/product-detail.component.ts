@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { CartService } from '../services/cart/cart.service';
 import { Product, CartProduct } from '../models/product';
 import { Modal } from 'bootstrap';
@@ -10,7 +11,7 @@ import { Modal } from 'bootstrap';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css'],
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   //memorizziamo l id del prodotto
   productId: number | null = null;
   //memorizzaare i dettagli del prodotto
@@ -19,6 +20,7 @@ export class ProductDetailComponent implements OnInit {
   allProducts: Product[] = [];
   //immagine selezionata per il modal
   selectedImage: string | null = null;
+  private routeSub: Subscription | null = null; // Sottoscrizione per monitorare i cambiamenti nell'URL
   //innittiamo nelle Activatedroute come dipendeza, consentendo di accedere ai dati di routing
   constructor(
     private route: ActivatedRoute, // per gestire i parametri dell url
@@ -27,63 +29,69 @@ export class ProductDetailComponent implements OnInit {
   ) {}
   //al momento dell inizializzazione del componente recuperiamo l id dall url
   ngOnInit(): void {
-    this.productId = Number(this.route.snapshot.paramMap.get('id'));
-    // this.route.snapshot: ottiene lo stato attuale del routing
-    // .paramMap: è una mappa che contiene tutti i parametri dell'URL
-    // .get('id'): prende il valore del parametro 'id' (esempio: /product/123 → id=123)
-    // Number(): converte il valore da stringa a numero (se id fosse "123", diventa 123)
-    this.productDetailsApi();
+    // Metodo eseguito durante l'inizializzazione del componente
+
+    // Sottoscrizione per monitorare i cambiamenti del parametro 'id' nell'URL
+    this.routeSub = this.route.paramMap.subscribe((params) => {
+      // `params`: contiene tutti i parametri dell'URL
+      const productId = params.get('id'); // Ottieni il valore del parametro 'id' (esempio: /product/123 → id=123)
+
+      if (productId) {
+        // Se l'ID del prodotto è valido (non null o undefined)
+        this.productDetailsApi(productId); // Carica i dettagli del prodotto specifico
+      }
+    });
+
+    // Carica l'elenco completo dei prodotti per il carosello
     this.loadAllProducts();
   }
-  //carichhiamo i dettagli del prodotto attraverso la chimata api
-  productDetailsApi(): void {
-    // Definizione dell'URL base dell'API
-    // Questo URL rappresenta il punto di accesso all'API per recuperare i dettagli dei prodotti.
-    const apiUrl = 'https://dummyjson.com/products';
 
-    // Verifica che l'ID del prodotto sia valido
-    // Controlliamo che `this.productId` non sia `null`.
-    // Se fosse null, significherebbe che qualcosa è andato storto (es. routing sbagliato).
-    if (this.productId !== null) {
-      // Effettuiamo una chiamata HTTP GET all'API
-      // `this.http.get<any>()` invia una richiesta all'API per ottenere i dati del prodotto.
-      // L'URL specifico viene creato aggiungendo l'ID del prodotto alla fine (`${apiUrl}/${this.productId}`).
-      this.http.get<any>(`${apiUrl}/${this.productId}`).subscribe({
-        // subscribe(): Serve per "ascoltare" la risposta API:
-        // Se la chiamata ha successo, eseguiamo la funzione next.
-        // Se c'è un errore, eseguiamo la funzione error.
-        //////////////////////////////////////////////////////
-        // Funzione che viene chiamata quando la chiamata API ha successo
-        next: (data) => {
-          console.log('Dettagli prodotto', data);
-          // Salviamo i dettagli del prodotto nella variabile `this.productDetails`
-          // Questo ci permette di usare i dati nel template per mostrarli all'utente.
-          this.productDetails = data;
-        },
-        // Funzione che viene chiamata in caso di errore durante la chiamata API
-        error: (err) => {
-          console.error('Errore nel recupero prodotto', err);
-          // Qui possiamo aggiungere ulteriori azioni per gestire l'errore,
-          // ad esempio mostrare un messaggio di errore all'utente.
-        },
-      });
-    } else {
-      // Caso in cui l'ID del prodotto non è valido (es. è null)
-      // Stampiamo un errore in console per aiutare con il debug.
-      console.error('ID del prodotto non valido');
-    }
+  ngOnDestroy(): void {
+    // Metodo chiamato automaticamente quando il componente viene distrutto
+
+    // Annulla la sottoscrizione per evitare memory leak
+    this.routeSub?.unsubscribe(); // Verifica che la sottoscrizione esista prima di annullarla
   }
-  loadAllProducts(): void {
-    const apiUrl = 'https://dummyjson.com/products';
-    this.http.get<{ products: Product[] }>(apiUrl).subscribe({
+
+  /**
+   * Effettua una chiamata API per caricare i dettagli di un prodotto specifico
+   * @param productId L'ID del prodotto da caricare
+   */
+  productDetailsApi(productId: string): void {
+    const apiUrl = `https://dummyjson.com/products/${productId}`; // Costruisce l'URL per accedere ai dettagli del prodotto
+
+    // Esegue una richiesta HTTP GET per ottenere i dettagli del prodotto
+    this.http.get<Product>(apiUrl).subscribe({
       next: (data) => {
-        this.allProducts = data.products; // Salva tutti i prodotti
+        // Quando la chiamata API ha successo
+        this.productDetails = data; // Salva i dettagli del prodotto nella proprietà `productDetails`
       },
       error: (err) => {
+        // Se la chiamata API fallisce, stampa un messaggio di errore
+        console.error('Errore nel caricamento del prodotto:', err);
+      },
+    });
+  }
+
+  /**
+   * Effettua una chiamata API per ottenere l'elenco completo dei prodotti
+   */
+  loadAllProducts(): void {
+    const apiUrl = 'https://dummyjson.com/products'; // URL per ottenere l'elenco di tutti i prodotti
+
+    // Esegue una richiesta HTTP GET per ottenere i dati
+    this.http.get<{ products: Product[] }>(apiUrl).subscribe({
+      next: (data) => {
+        // Quando la chiamata API ha successo
+        this.allProducts = data.products; // Salva l'elenco dei prodotti nella proprietà `allProducts`
+      },
+      error: (err) => {
+        // Se la chiamata API fallisce, stampa un messaggio di errore
         console.error('Errore nel caricamento dei prodotti:', err);
       },
     });
   }
+
   /**
    * Aggiungere un prodotto al carrello.
    * @param product Prodotto da aggiungere.
@@ -92,6 +100,49 @@ export class ProductDetailComponent implements OnInit {
     const cartProduct: CartProduct = { ...product, quantity: 1 }; // Creiamo un oggetto per il carrello
     this.cartService.addToCart(cartProduct); // Aggiungiamo al carrello
   }
+  /**
+   * Mostra il modal per visualizzare un'immagine selezionata e gestisce i pulsanti Avanti/Indietro
+   * @param image URL dell'immagine da mostrare nel modal
+   */
+  openImageModal(image: string): void {
+    this.selectedImage = image; // Imposta l'immagine selezionata
+
+    // Recupera l'elemento HTML del modal tramite il suo ID
+    const modalElement = document.getElementById('imageModal');
+
+    if (modalElement) {
+      // Se l'elemento esiste
+      const modal = new Modal(modalElement); // Crea un'istanza del modal
+      modal.show(); // Mostra il modal
+    }
+  }
+
+  /**
+   * Cambia l'immagine mostrata nel modal, andando alla successiva o precedente
+   * @param direction Indica la direzione ('next' o 'prev')
+   */
+  changeModalImage(direction: 'next' | 'prev'): void {
+    if (this.productDetails?.images) {
+      const currentIndex = this.productDetails.images.indexOf(
+        this.selectedImage || ''
+      ); // Trova l'indice dell'immagine corrente
+
+      if (direction === 'next') {
+        // Calcola l'indice successivo, tornando all'inizio se si supera la lunghezza
+        const nextIndex =
+          (currentIndex + 1) % this.productDetails.images.length;
+        this.selectedImage = this.productDetails.images[nextIndex];
+      } else if (direction === 'prev') {
+        // Calcola l'indice precedente, tornando alla fine se si va sotto zero
+        const prevIndex =
+          (currentIndex - 1 + this.productDetails.images.length) %
+          this.productDetails.images.length;
+        this.selectedImage = this.productDetails.images[prevIndex];
+      }
+    }
+  }
+
+  
   ////////////////////////////////////////////////////////////////////////
   //stars icon
   getStarIcon(star: number, rate: number): string {
@@ -105,18 +156,5 @@ export class ProductDetailComponent implements OnInit {
     } else {
       return 'far fa-star text-muted'; // Stella vuota
     }
-  }
-  //modale
-  openImageModal(image: string): void {
-    this.selectedImage = image; // Imposta l'immagine selezionata
-    const modalElement = document.getElementById('imageModal'); // Ottieni il riferimento al modal
-    if (modalElement) {
-      const modal = new Modal(modalElement); // Crea un'istanza del modal
-      modal.show(); // Mostra il modal
-    }
-  }
-
-  changeModalImage(image: string): void {
-    this.selectedImage = image; // Aggiorna solo l'immagine mostrata nel modal
   }
 }
