@@ -1,4 +1,4 @@
-<div class="container my-5">
+<div class="container my-5" *ngIf="filteredProducts.length > 0; else loading">
   <!-- Barra dei filtri -->
   <div class="row mb-4">
     <div class="col-md-3">
@@ -149,3 +149,10 @@
     </ul>
   </nav>
 </div>
+<!-- Placeholder per caricamento -->
+<ng-template #loading>
+  <div class="text-center my-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-3">Loading products...</p>
+  </div>
+</ng-template>
