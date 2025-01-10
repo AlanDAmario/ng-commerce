@@ -23,8 +23,9 @@
   border-radius: 8px; /* Optional, per angoli arrotondati */
 }
 
+
 .logo-size:hover {
-  transform: scale(1.1); /* Ingrandisce leggermente il logo */
+  transform: scale(0.9); /* Ingrandisce leggermente il logo */
 }
 .badge {
   font-size: 0.75rem; /* Dimensione del testo */

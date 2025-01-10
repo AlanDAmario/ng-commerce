@@ -9,6 +9,8 @@ import { CartComponent } from './services/cart/cart.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { FooterComponent } from './footer/footer.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { FooterComponent } from './footer/footer.component';
     NavbarComponent,
     ProductDetailComponent,
     FooterComponent,
+    DashboardComponent,
+    HomeComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [provideHttpClient()],
