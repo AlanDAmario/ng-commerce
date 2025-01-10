@@ -1,0 +1,49 @@
+/* Main Container */
+.home-container {
+  background: url('/home-bg.jpg') no-repeat center center fixed;
+  background-size: cover; /* Adjust the background image to cover the container */
+  min-height: 100vh; /* Ensure it covers the full screen height */
+  display: flex; /* Use Flexbox to center the content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 2rem;
+  margin: 0;
+}
+
+/* Content Section */
+.home-content {
+  text-align: center; /* Center-align text */
+  color: white; /* White text for readability */
+  background-color: rgba(0, 0, 0, 0.5); /* Transparent background for better contrast */
+  padding: 2rem; /* Inner spacing */
+  border-radius: 8px; /* Rounded corners */
+}
+
+/* Heading */
+h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Paragraph */
+p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Button */
+button {
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

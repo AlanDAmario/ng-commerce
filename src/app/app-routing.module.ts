@@ -4,11 +4,13 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { CartComponent } from './services/cart/cart.component';
 import { ProductComponent } from './shop/product.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: 'product/:id', component: ProductDetailComponent },
   { path: 'products', component: ProductComponent },
   { path: 'cart', component: CartComponent },
-  {path: 'dashboard', component: DashboardComponent}
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'home', component: HomeComponent}
   // Rotte aggiuntive (esempio: home page)
   // { path: '', redirectTo: '/home', pathMatch: 'full' }, // Reindirizza alla home page
   // { path: '**', redirectTo: '/home' } // Gestione di rotte non valide
