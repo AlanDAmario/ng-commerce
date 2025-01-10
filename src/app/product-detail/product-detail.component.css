@@ -23,14 +23,11 @@
 .carousel-control-prev span,
 .carousel-control-next span {
   color: #000; /* Colore delle frecce */
-  background-color: rgba(255, 255, 255, 0.5); /* Sfondo trasparente */
+ 
   border-radius: 50%; /* Forma circolare */
-  padding: 10px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+ 
+ 
+  
 }
 
 

@@ -1,9 +1,89 @@
+<!-- Full-screen section with background image -->
+<div class="container-fluid p-0 position-relative home-section">
+  <!-- Semi-transparent overlay for contrast -->
+  <div class="overlay"></div>
 
-<div class="home-container">
-  <!-- Centered Content -->
-  <div class="home-content">
-    <h1>Shop Our Products</h1>
-    <p>Discover a wide range of items for every need.</p>
-    <button (click)="navigateToShop()">Explore Now</button>
+  <!-- Hero container for centered elements -->
+  <div
+    class="home-container d-flex flex-column align-items-center justify-content-center text-white text-center position-relative"
+  >
+    <!-- Main Title -->
+    <h1 class="display-3 fw-bold mb-3">
+      Discover Our Exclusive Collection
+    </h1>
+    <!-- Supporting text / subtitle -->
+    <p class="fs-5 mb-4">
+      Join us and explore our unique and inspiring products!
+    </p>
+
+    <!-- Carousel with product images -->
+    <div
+      id="productCarousel"
+      class="carousel slide carousel-fade product-carousel shadow rounded"
+      data-bs-ride="carousel"
+    >
+      <!-- Inner carousel content -->
+      <div class="carousel-inner">
+        <!-- Loop through each product (in Angular) -->
+        <div
+          *ngFor="let product of products; let i = index"
+          class="carousel-item"
+          [class.active]="i === 0"
+        >
+          <!-- Link to product page -->
+          <a [routerLink]="['/product', product.id]">
+            <!-- Display image or fallback to thumbnail -->
+            <img
+              [src]="product.images.length ? product.images[0] : product.thumbnail"
+              class="d-block w-100 carousel-image"
+              [alt]="product.title"
+            />
+          </a>
+          <!-- Caption overlay -->
+          <div class="carousel-caption d-none d-md-block caption-overlay">
+            <h5 class="text-white">
+              {{ product.title }}
+            </h5>
+            <p class="text-light text-truncate">
+              {{ product.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Previous control -->
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#productCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <!-- Next control -->
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#productCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <!-- End of carousel -->
+
+    <!-- Call to Action Button -->
+    <button
+  class="btn btn-discover btn-lg mt-5 px-4 py-2 shadow rounded-pill"
+  [routerLink]="['/products']"
+>
+  Discover Now
+</button>
+
   </div>
+  <!-- End of home-container -->
 </div>
+<!-- End of container-fluid -->

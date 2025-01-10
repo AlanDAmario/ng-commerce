@@ -5,7 +5,7 @@
       <img
         [src]="productDetails.thumbnail"
         [alt]="productDetails.title"
-        class="img-fluid rounded shadow-sm"
+        class="img-fluid rounded shadow"
         style="cursor: pointer"
         (click)="openImageModal(productDetails.thumbnail)"
       />
@@ -87,15 +87,12 @@
 
       <!-- Pulsante acquisto -->
       <button
-        class="btn btn-primary mt-3"
+        class="btn btn-secondary mt-3"
         [disabled]="productDetails.stock === 0"
         (click)="addToCart(productDetails)"
       >
         Add to Cart
       </button>
-      <p class="text-muted mt-2">
-        Min. Order: {{ productDetails.minimumOrderQuantity }}
-      </p>
     </div>
   </div>
 
@@ -121,7 +118,7 @@
         <!-- Pulsante 'Indietro' -->
         <button
           type="button"
-          class="btn btn-light position-absolute top-50 start-0 translate-middle-y"
+          class="btn  position-absolute top-50 start-0 translate-middle-y"
           style="z-index: 10"
           (click)="changeModalImage('prev')"
         >
@@ -179,7 +176,7 @@
     <div class="carousel-inner">
       <div
         *ngFor="let product of allProducts; let i = index"
-        class="carousel-item"
+        class="carousel-item py-5"
         [class.active]="i === 0"
       >
         <a
