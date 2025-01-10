@@ -8,6 +8,7 @@ import { ProductComponent } from './shop/product.component';
 import { CartComponent } from './services/cart/cart.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
     CartComponent,
     NavbarComponent,
     ProductDetailComponent,
+    FooterComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [provideHttpClient()],
