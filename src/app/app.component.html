@@ -1,5 +1,16 @@
-<!-- La barra di navigazione è sempre visibile -->
-<app-navbar></app-navbar>
-<!-- Le rotte dinamiche vengono caricate qui -->
-<router-outlet></router-outlet>
+<body>
+  <header>
+    <!-- Inserisci qui il tuo header -->
+    <app-navbar></app-navbar>
+  </header>
 
+  <main>
+    <!-- Router Outlet per il contenuto dinamico -->
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer>
+    <!-- Footer comune -->
+    <app-footer></app-footer>
+  </footer>
+</body>

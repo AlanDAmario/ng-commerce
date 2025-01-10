@@ -1,0 +1,11 @@
+/* Imposta il layout della pagina con Flexbox */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* L'altezza minima copre l'intera viewport */
+  margin: 0; /* Rimuove margini predefiniti */
+}
+
+main {
+  flex: 1; /* Occupa tutto lo spazio disponibile tra header e footer */
+}

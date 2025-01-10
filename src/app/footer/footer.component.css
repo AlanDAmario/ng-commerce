@@ -1,0 +1,22 @@
+footer {
+  background-color: #343a40; /* Sfondo scuro */
+  color: #f8f9fa; /* Testo chiaro */
+  text-align: center;
+}
+
+footer a {
+  color: #adb5bd; /* Link chiari */
+  transition: color 0.2s ease-in-out; /* Transizione per hover */
+}
+
+footer a:hover {
+  color: #0d6efd; /* Colore del link al passaggio del mouse */
+}
+
+footer .form-control {
+  border-radius: 0.25rem;
+}
+
+footer .btn {
+  border-radius: 0.25rem;
+}

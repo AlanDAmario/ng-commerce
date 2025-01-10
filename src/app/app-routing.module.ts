@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { CartComponent } from './services/cart/cart.component';
 import { ProductComponent } from './shop/product.component';
+import { FooterComponent } from './footer/footer.component';
 const routes: Routes = [
   { path: 'product/:id', component: ProductDetailComponent },
   { path: 'products', component: ProductComponent },
-  {path: 'cart', component: CartComponent}
+  { path: 'cart', component: CartComponent },
   // Rotte aggiuntive (esempio: home page)
   // { path: '', redirectTo: '/home', pathMatch: 'full' }, // Reindirizza alla home page
   // { path: '**', redirectTo: '/home' } // Gestione di rotte non valide
