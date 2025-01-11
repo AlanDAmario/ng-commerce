@@ -10,9 +10,9 @@ const routes: Routes = [
   { path: 'products', component: ProductComponent },
   { path: 'cart', component: CartComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'home', component: HomeComponent}
+  { path: 'home', component: HomeComponent},
   // Rotte aggiuntive (esempio: home page)
-  // { path: '', redirectTo: '/home', pathMatch: 'full' }, // Reindirizza alla home page
+   { path: '', redirectTo: 'home', pathMatch: 'full' }, // Reindirizza alla home page
   // { path: '**', redirectTo: '/home' } // Gestione di rotte non valide
 ];
 
