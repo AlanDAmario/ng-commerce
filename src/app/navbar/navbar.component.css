@@ -48,3 +48,10 @@
   top: 0px; /* Allinea verticalmente */
   transform: translate(50%, -50%); /* Mantiene il badge sopra l'icona */
 }
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa; 
+}
