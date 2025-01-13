@@ -64,6 +64,8 @@
                 <a
                   [routerLink]="['home']"
                   class="nav-link d-flex align-items-center"
+                  (mouseover)="onHoverHome()"
+                  (mouseout)="onHoverOutHome()"
                   (click)="closeNavbar()"
                 >
                   <img
@@ -79,6 +81,8 @@
                 <a
                   [routerLink]="['products']"
                   class="nav-link d-flex align-items-center"
+                  (mouseover)="onHoverShop()"
+                  (mouseout)="onHoverOutShop()"
                   (click)="closeNavbar()"
                 >
                   <img
@@ -94,6 +98,8 @@
                 <a
                   [routerLink]="['cart']"
                   class="nav-link d-flex align-items-center position-relative"
+                  (mouseover)="onHoverCart()"
+                  (mouseout)="onHoverOutCart()"
                   (click)="closeNavbar()"
                 >
                   <img
