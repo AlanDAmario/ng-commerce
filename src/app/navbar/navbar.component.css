@@ -9,7 +9,7 @@
 }
 
 .gif-active {
-   transform: scale(1.5);
+  transform: scale(1.5);
 }
 
 .static-icon-profile {
@@ -23,10 +23,10 @@
   border-radius: 8px; /* Optional, per angoli arrotondati */
 }
 
-
 .logo-size:hover {
-  transform: scale(0.9); /* Ingrandisce leggermente il logo */
+  transform: scale(0.9); /* Rimpicciolisce leggermente il logo */
 }
+
 .badge {
   font-size: 0.75rem; /* Dimensione del testo */
   padding: 0.4em 0.6em; /* Spaziatura interna */
@@ -38,20 +38,64 @@
   border-radius: 50%; /* Forma circolare */
 }
 
-.static-icon-cart {
-  width: 24px; /* Larghezza dell'icona del carrello */
-  height: 24px; /* Altezza dell'icona del carrello */
-}
-
 .custom-start {
   right: -8px; /* Sposta leggermente verso destra */
   top: 0px; /* Allinea verticalmente */
   transform: translate(50%, -50%); /* Mantiene il badge sopra l'icona */
 }
+
 .list-group-item {
   cursor: pointer;
 }
 
 .list-group-item:hover {
-  background-color: #f8f9fa; 
+  background-color: #f8f9fa;
 }
+
+/* Barra di ricerca */
+.search-bar {
+  width: 100%; /* Adatta alla larghezza disponibile */
+  max-width: 600px; /* Lunghezza massima */
+  border-radius: 20px; /* Angoli arrotondati */
+}
+
+/* Dropdown dei suggerimenti */
+.dropdown-suggestions {
+  z-index: 1050; /* Livello più alto per visibilità */
+  top: 100%; /* Posiziona sotto l'input */
+  border-radius: 10px; /* Arrotonda gli angoli */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Effetto ombra */
+}
+
+/* Thumbnail nei suggerimenti */
+.thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px; /* Angoli leggermente arrotondati */
+  object-fit: cover; /* Mantiene le proporzioni */
+  margin-right: 10px; /* Spaziatura laterale */
+}
+
+/* Icone uniformi */
+.icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px; /* Spaziatura tra l'icona e il testo */
+}
+
+.badge-position {
+  top: 0;
+  right: -5px; /* Posizionamento relativo all'icona */
+  transform: translate(50%, -50%);
+}
+/* Modifica per dispositivi mobili */
+@media (max-width: 768px) {
+  .badge-position {
+    top: 10px; /* Sposta il badge leggermente in basso */
+    right: -8px; /* Adatta la posizione orizzontale */
+    transform: none; /* Rimuove la trasformazione */
+    font-size: 0.8rem; /* Ridimensiona il badge */
+  }
+
+}
+

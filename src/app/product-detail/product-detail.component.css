@@ -1,3 +1,4 @@
+
 .card {
   border: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -23,11 +24,7 @@
 .carousel-control-prev span,
 .carousel-control-next span {
   color: #000; /* Colore delle frecce */
- 
   border-radius: 50%; /* Forma circolare */
- 
- 
-  
 }
 
 

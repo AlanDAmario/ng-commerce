@@ -1,122 +1,154 @@
+<div class="container my-5">
+  <!-- Titolo principale -->
+  <h1 class="mb-4 text-center text-primary fw-bold">Shopping Cart</h1>
+  <div id="alert-container" class="mt-3"></div>
 
-  <div class="container my-5">
-    <!-- Titolo principale -->
-    <h1 class="mb-4 text-center text-primary fw-bold">Your Shopping Cart</h1>
-    <div id="alert-container" class="mt-3"></div>
+  <!-- Messaggio se il carrello è vuoto -->
+  <div *ngIf="cartItems.length === 0" class="alert alert-warning text-center">
+    <i class="fas fa-shopping-cart fa-2x mb-3"></i>
+    <p class="fw-bold">Your cart is empty. Start shopping now!</p>
+  </div>
 
-    <!-- Messaggio se il carrello è vuoto -->
-    <div *ngIf="cartItems.length === 0" class="alert alert-warning text-center">
-      <i class="fas fa-shopping-cart fa-2x mb-3"></i>
-      <p class="fw-bold">Your cart is empty. Start shopping now!</p>
+  <!-- Se il carrello contiene elementi -->
+  <div *ngIf="cartItems.length > 0">
+    <!-- Struttura per dispositivi mobili -->
+    <div class="d-md-none">
+      <div *ngFor="let item of cartItems" class="card mb-3 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-3">
+            <img
+              [src]="item.thumbnail"
+              [alt]="item.title"
+              class="img-fluid rounded"
+              style="width: 80px; height: 80px; object-fit: cover"
+            />
+            <div class="flex-grow-1">
+              <h5 class="card-title mb-1">{{ item.title }}</h5>
+              <p class="card-text text-muted mb-1">
+                {{ item.category | titlecase }}
+              </p>
+              <p class="card-text text-success fw-bold mb-1">
+                {{ item.price | currency }}
+              </p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <!-- Pulsanti per quantità -->
+            <div class="input-group">
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="decreaseQuantity(item)"
+                [disabled]="item.quantity === 1"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <span class="px-3">{{ item.quantity }}</span>
+              <button
+                class="btn btn-sm btn-outline-success"
+                (click)="increaseQuantity(item)"
+                [disabled]="item.quantity === item.maxQuantity"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <!-- Pulsante rimuovi -->
+            <button
+              class="btn btn-sm btn-danger shadow-sm"
+              (click)="removeAllFromCart(item)"
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Se il carrello contiene elementi -->
-    <div *ngIf="cartItems.length > 0">
-      <!-- Tabella dei prodotti nel carrello -->
-      <div class="table-responsive shadow-sm rounded bg-light p-3">
-        <table class="table align-middle table-hover">
-          <thead class="table-primary text-center">
-            <tr>
-              <th>Image</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Iterazione sugli articoli del carrello -->
-            <tr *ngFor="let item of cartItems">
-              <!-- Colonna immagine -->
-              <td class="text-center">
-                <img
-                  [src]="item.thumbnail"
-                  [alt]="item.title"
-                  class="img-thumbnail shadow-sm"
-                  style="width: 80px; height: 80px; object-fit: cover"
-                />
-              </td>
-              <!-- Colonna prodotto -->
-              <td>
-                <strong>{{ item.title }}</strong>
-                <p class="text-muted mb-0">{{ item.category | titlecase }}</p>
-              </td>
-              <!-- Colonna prezzo -->
-              <td class="text-center text-success fw-bold">
-                {{ item.price | currency }}
-              </td>
-              <!-- Colonna quantità -->
-              <td class="text-center">
-                <div class="input-group justify-content-center">
-                  <!-- Pulsante diminuisci quantità -->
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    (click)="decreaseQuantity(item)"
-                    [disabled]="item.quantity === 1"
-                  >
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <!-- Quantità corrente -->
-                  <input
-                    type="text"
-                    class="form-control text-center mx-1"
-                    [value]="item.quantity"
-                    readonly
-                    style="max-width: 50px"
-                  />
-                  <!-- Pulsante aumenta quantità -->
-                  <button
-                    class="btn btn-sm btn-outline-success"
-                    (click)="increaseQuantity(item)"
-                    [disabled]="item.quantity === item.maxQuantity"
-                  >
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-              </td>
-              <!-- Colonna totale per prodotto -->
-              <td class="text-center fw-bold">
-                {{ item.quantity * item.price | currency }}
-              </td>
-              <!-- Colonna azioni -->
-              <td class="text-center">
+    <!-- Struttura per dispositivi desktop -->
+    <div class="table-responsive d-none d-md-block">
+      <table class="table align-middle table-hover">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+            <td class="text-center">
+              <img
+                [src]="item.thumbnail"
+                [alt]="item.title"
+                class="img-thumbnail shadow-sm"
+                style="width: 80px; height: 80px; object-fit: cover"
+              />
+            </td>
+            <td>
+              <strong>{{ item.title }}</strong>
+              <p class="text-muted mb-0">{{ item.category | titlecase }}</p>
+            </td>
+            <td class="text-center text-success fw-bold">
+              {{ item.price | currency }}
+            </td>
+            <td class="text-center">
+              <div class="input-group justify-content-center">
                 <button
-                  class="btn btn-sm btn-danger shadow-sm"
-                  (click)="removeAllFromCart(item)"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="decreaseQuantity(item)"
+                  [disabled]="item.quantity === 1"
                 >
-                  <i class="fas fa-trash-alt"></i> Remove
+                  <i class="fas fa-minus"></i>
                 </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <span class="px-3">{{ item.quantity }}</span>
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  (click)="increaseQuantity(item)"
+                  [disabled]="item.quantity === item.maxQuantity"
+                >
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+            </td>
+            <td class="text-center fw-bold">
+              {{ item.quantity * item.price | currency }}
+            </td>
+            <td class="text-center">
+              <button
+                class="btn btn-sm btn-danger shadow-sm"
+                (click)="removeAllFromCart(item)"
+              >
+                <i class="fas fa-trash-alt"></i> Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <!-- Totale -->
-      <div
-        class="d-flex justify-content-between align-items-center mt-4 bg-light rounded shadow-sm p-3"
-      >
-        <h4 class="text-primary">
+    <!-- Totale e pulsanti -->
+    <div
+      class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 bg-light rounded shadow-sm p-3"
+    >
+      <div class="mb-3 mb-md-0">
+        <h4 class="text-primary mb-0">
           <i class="fas fa-box"></i> Total Items:
           <span class="fw-bold">{{ totalItems }}</span>
         </h4>
-        <h4 class="text-danger">
+        <h4 class="text-danger mt-2 mb-0">
           <i class="fas fa-dollar-sign"></i> Total Price:
           <span class="fw-bold">{{ totalPrice | currency }}</span>
         </h4>
       </div>
-
-      <!-- Pulsanti di azione -->
-      <div class="d-flex justify-content-end mt-4 gap-3">
-        <!-- Pulsante per svuotare il carrello -->
+      <div class="d-flex gap-3">
         <button
           class="btn btn-outline-danger shadow-sm fw-bold"
           (click)="clearCart()"
         >
           <i class="fas fa-trash"></i> Clear Cart
         </button>
-        <!-- Pulsante per aprire la modale -->
         <button
           class="btn btn-primary shadow-sm fw-bold"
           data-bs-toggle="modal"
@@ -125,54 +157,6 @@
           <i class="fas fa-credit-card"></i> Proceed to Checkout
         </button>
       </div>
-
-      <!-- Modale per il pagamento -->
-      <div
-        class="modal fade"
-        id="paymentModal"
-        tabindex="-1"
-        aria-labelledby="paymentModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <!-- Header della modale -->
-            <div class="modal-header">
-              <h5 class="modal-title" id="paymentModalLabel">Payment</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <!-- Corpo della modale -->
-            <div class="modal-body">
-              <p>
-                Total to Pay: <strong>{{ totalPrice | currency }}</strong>
-              </p>
-              <p>Please confirm your payment to proceed.</p>
-            </div>
-            <!-- Footer della modale -->
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="confirmPayment()"
-              >
-                Confirm Payment
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
-
+</div>

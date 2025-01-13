@@ -21,7 +21,16 @@
   z-index: 2;
   min-height: 100vh;
 }
+/* Media query per dispositivi mobili */
+@media (max-width: 768px) {
+  .home-section {
+    background: url('/mobile-bg.jpg') no-repeat center center;
+    background-size: cover; /* Adatta l'immagine al contenitore */
+    min-height: 70vh; /* Riduce l'altezza per dispositivi mobili */
+  }
 
+  
+}
 /* Carousel styling */
 .product-carousel {
   width: 80%;
