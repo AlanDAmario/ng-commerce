@@ -6,6 +6,8 @@ import { CartService } from '../services/cart/cart.service';
 import { Product, CartProduct } from '../models/product';
 import { Modal } from 'bootstrap';
 
+// Dichiarazione generica per Bootstrap
+declare var bootstrap: any;
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -21,6 +23,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   //immagine selezionata per il modal
   selectedImage: string | null = null;
   private routeSub: Subscription | null = null; // Sottoscrizione per monitorare i cambiamenti nell'URL
+  modalInstance: any = null; // Variabile per l'istanza del modal
   //innittiamo nelle Activatedroute come dipendeza, consentendo di accedere ai dati di routing
   constructor(
     private route: ActivatedRoute, // per gestire i parametri dell url
@@ -107,13 +110,16 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   openImageModal(image: string): void {
     this.selectedImage = image; // Imposta l'immagine selezionata
 
-    // Recupera l'elemento HTML del modal tramite il suo ID
     const modalElement = document.getElementById('imageModal');
-
     if (modalElement) {
-      // Se l'elemento esiste
-      const modal = new Modal(modalElement); // Crea un'istanza del modal
-      modal.show(); // Mostra il modal
+      if (!this.modalInstance) {
+        // Se la modale non è stata ancora creata
+        this.modalInstance = new bootstrap.Modal(modalElement);
+      }
+      if (!this.modalInstance._isShown) {
+        // Mostra la modale solo se non è già visibile
+        this.modalInstance.show();
+      }
     }
   }
 
@@ -142,7 +148,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+  closeImageModal(): void {
+    if (this.modalInstance) {
+      this.modalInstance.hide();
+      this.modalInstance = null;
+    }
+  }
+
   ////////////////////////////////////////////////////////////////////////
   //stars icon
   getStarIcon(star: number, rate: number): string {
