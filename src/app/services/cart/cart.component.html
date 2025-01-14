@@ -160,3 +160,60 @@
     </div>
   </div>
 </div>
+<!-- Modale per il pagamento -->
+<div
+  class="modal fade"
+  id="paymentModal"
+  tabindex="-1"
+  aria-labelledby="paymentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content shadow-lg">
+      <!-- Header della modale -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="paymentModalLabel">
+          <i class="fas fa-credit-card"></i> Payment Summary
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <!-- Corpo della modale -->
+      <div class="modal-body">
+        <p class="text-center fs-5 mb-4">
+          Total to Pay:
+          <strong class="text-danger">{{ totalPrice | currency }}</strong>
+        </p>
+        <p class="text-muted text-center">
+          Please confirm your payment to proceed with your order. We guarantee
+          secure and encrypted transactions.
+        </p>
+        <div class="d-flex justify-content-center mt-4">
+          <img
+            src="/secure-payment.png"
+            alt="Secure Payment"
+            class="img-fluid"
+            style="max-height: 100px; object-fit: contain"
+          />
+        </div>
+      </div>
+      <!-- Footer della modale -->
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-arrow-left"></i> Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-success fw-bold"
+          (click)="confirmPayment()"
+        >
+          <i class="fas fa-check-circle"></i> Confirm Payment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

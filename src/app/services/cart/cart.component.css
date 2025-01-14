@@ -23,8 +23,6 @@ h1 {
   transition: all 0.3s ease;
 }
 
-
-
 .btn-outline-danger:hover {
   background-color: #dc3545;
   color: #fff;
@@ -42,4 +40,25 @@ h1 {
 
 .alert-warning i {
   color: #ffc107;
+}
+/*modale*/
+.modal-header {
+  border-bottom: 2px solid #f8f9fa;
+}
+
+.modal-footer {
+  border-top: 2px solid #f8f9fa;
+}
+
+.modal-body p {
+  line-height: 1.6;
+}
+
+.modal-body img {
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.btn-close-white {
+  background-color: white;
+  filter: brightness(0.8);
 }

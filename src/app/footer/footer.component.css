@@ -20,3 +20,11 @@ footer .form-control {
 footer .btn {
   border-radius: 0.25rem;
 }
+.social-icon {
+  transition: color 0.2s ease-in-out;
+}
+
+/* Cambiamo il colore in blu al passaggio del mouse */
+.social-icon:hover {
+  color: #585859 !important; /* Blu di Bootstrap (primary) */
+}

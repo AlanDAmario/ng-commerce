@@ -1,6 +1,3 @@
-/* ------------------------------
-   STILI PERSONALIZZATI
------------------------------- */
 
 /* 1. Effetto hover sulle card per dare risalto al passaggio del mouse */
 .card:hover {
@@ -43,10 +40,6 @@ input[type="range"].form-range::-webkit-slider-thumb {
   margin-top: -5px; /* centriamo il thumb verticalmente rispetto alla traccia */
 }
 
-/* 4. Paginazione:
-   - Rimuoviamo il bordo classico e aggiungiamo un leggero margine orizzontale.
-   - Colore blu di Bootstrap per il testo, hover su grigio chiaro.
-*/
 .pagination .page-link {
   color: #0d6efd;
   border: none;
