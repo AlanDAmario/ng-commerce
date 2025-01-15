@@ -25,9 +25,7 @@ Questo **E-Commerce Frontend** consente di:
 - **Filtrare** i prodotti in base al prezzo grazie a uno **slider** e cercare i prodotti per nome grazie alla **barra di ricerca**.
 - **Aggiungere** prodotti al carrello con pulsante _Add to Cart_ e alert di conferma.
 - **Paginarne** la visualizzazione tramite pulsanti “Previous” e “Next”, che diventa reattiva in base al filtro del prezzo aumentando le pagine o diminuendo in base al prezzo scelto.
--
-
-Il tutto in un layout **responsive** grazie a **Bootstrap**, con stili personalizzati scritti in **SCSS/CSS**.
+- Il tutto in un layout **responsive** grazie a **Bootstrap**, con stili personalizzati scritti in **SCSS/CSS**.
 
 ---
 
@@ -72,7 +70,7 @@ Apri il terminale nella directory del progetto e digita:
 ng serve
 ```
 
-E cliccare (tenendo ctrl e tasto sinistro del mouse) sul proprio local host, che sarà simile a:
+E cliccare (tenendo ctrl e cliccando con il tasto sinistro del mouse) sul proprio local host, che sarà simile a:
 ```bash
 http://localhost:4200
 ```
@@ -124,6 +122,7 @@ L'applicazione offre una serie di funzionalità chiave per garantire un'esperien
 Questo progetto sfrutta un insieme di tecnologie moderne per garantire performance, manutenibilità e un'esperienza utente di alta qualità:
 
 ### Frontend
+- **HTML5**: Per la struttura semantica del progetto.
 - **Angular**: Framework per la costruzione di Single Page Applications (SPA) con architettura modulare e reattiva.
 - **Bootstrap**: Framework CSS per un design responsive e componenti predefiniti, utilizzato per creare layout e stili moderni.
 - **SCSS/CSS**: Per personalizzazioni avanzate dello stile.
@@ -131,7 +130,7 @@ Questo progetto sfrutta un insieme di tecnologie moderne per garantire performan
 ### Programmazione e Tools
 - **TypeScript**: Linguaggio con tipizzazione statica che estende JavaScript, utilizzato per garantire un codice più robusto e leggibile.
 - **JavaScript**: Linguaggio di scripting per funzionalità avanzate e interattività.
-- **HTML5**: Per la struttura semantica del progetto.
+
 
 ### Backend simulato
 - **DummyJSON API**: API gratuita utilizzata per ottenere dati relativi ai prodotti, categorie, recensioni e carrelli. Offre un backend simulato perfetto per lo sviluppo di progetti demo.
