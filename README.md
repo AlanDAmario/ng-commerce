@@ -171,6 +171,5 @@ Il progetto offre una buona base per un'applicazione di e-commerce, ma ci sono a
 ### 3. **Ottimizzazione**
 - **SEO**: Ottimizzazione delle pagine per i motori di ricerca, migliorando la struttura e i meta tag.
 
-Questi miglioramenti contribuiranno a rendere l'app più completa, accessibile e pronta per l'uso reale.
 
 
