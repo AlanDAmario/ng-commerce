@@ -13,7 +13,7 @@ Benvenuto nel mio primo progetto **Angular**(18.2.12), un piccolo progetto nato 
 5. [Funzionalità Principali](#funzionalità-principali)
 6. [Tecnologie Utilizzate](#tecnologie-utilizzate)
 7. [Possibili Miglioramenti](#possibili-miglioramenti)
-8. [Contatti](#contatti)
+
 
 ---
 
@@ -155,5 +155,22 @@ Questo progetto sfrutta un insieme di tecnologie moderne per garantire performan
 
 ---
 
+## Possibili miglioramenti
+
+Il progetto offre una buona base per un'applicazione di e-commerce, ma ci sono alcune aree che potrebbero essere migliorate per arricchire ulteriormente l'esperienza utente:
+
+### 1. **Funzionalità aggiuntive**
+- **Autenticazione**: Integrazione di un sistema completo di login e registrazione con autenticazione JWT, DummyJSON fornisce un'API di autenticazione che restituisce token JWT, permettendo di simulare un backend autenticato. Questo è particolarmente utile per lo sviluppo frontend, consentendo di testare flussi di autenticazione senza implementare un vero backend.
+
+- **Pagamenti**: Implementazione di un sistema di pagamento simulato più 'reale' tramite provider come **Stripe** o **PayPal SandBox**.
+
+### 2. **Esperienza utente**
+- **Recensioni avanzate**: Aggiunta di filtri per le recensioni, come la possibilità di ordinarle per punteggio o data.
+- **Accessibilità**: Miglioramento dell'accessibilità del sito per utenti con disabilità, seguendo le linee guida WCAG.
+
+### 3. **Ottimizzazione**
+- **SEO**: Ottimizzazione delle pagine per i motori di ricerca, migliorando la struttura e i meta tag.
+
+Questi miglioramenti contribuiranno a rendere l'app più completa, accessibile e pronta per l'uso reale.
 
 
