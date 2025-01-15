@@ -21,8 +21,12 @@ export class ProductComponent implements OnInit {
   currentPage: number = 1; // Pagina attuale
   totalPages: number = 0; // Numero totale di pagine
   pages: number[] = []; // Array per navigare tra le pagine
-  // Contatore del numero di prodotti nel carrello
+  // Contatore del numero di prodotti nell icona del carrello
   cartItemCounter: number = 0;
+  //alert di conferma
+  showAlert: boolean = false;
+  //salviamo il titolo del prodotto
+  productTitle: string = '';
 
   constructor(
     private cartService: CartService, // Servizio per gestire il carrello
@@ -122,6 +126,13 @@ export class ProductComponent implements OnInit {
   addToCart(product: Product): void {
     const cartProduct: CartProduct = { ...product, quantity: 1 };
     this.cartService.addToCart(cartProduct); // Aggiungi al carrello
+    //alert
+    this.productTitle = product.title;
+    this.showAlert = true;
+    //set per nasconmderlo dopo 5 secondi
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 5000);
   }
 
   /**

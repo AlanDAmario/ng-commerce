@@ -1,4 +1,19 @@
 <div class="container my-5" *ngIf="filteredProducts.length > 0; else loading">
+  <!-- alert di conferma versione bootsrap -->
+  <div
+    *ngIf="showAlert"
+    class="alert alert-success alert-dismissible fade show"
+    role="alert"
+  >
+    <strong>{{ productTitle }}</strong> added to the cart!
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+      (click)="showAlert = false"
+    ></button>
+  </div>
   <!-- Barra dei filtri -->
   <div class="row mb-4">
     <div class="col-md-4">
