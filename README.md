@@ -1,6 +1,6 @@
 # E-Commerce Frontend
 
-Benvenuto nel mio primo progetto **Angular**(18.2.12), un piccolo progetto nato per imparare come usare questo nuovo framework, in questo **E-Commerce** realizzato con **Angular** e **Bootstrap**, è pensato per offrire un’esperienza di acquisto semplice e accattivante. Potrai filtrare i prodotti, aggiungerli al carrello e visualizzare un alert di conferma, il tutto in un’interfaccia reattiva e moderna.
+Benvenuto nel mio primo progetto **Angular**(18.2.12), un piccolo progetto nato per imparare come usare questo nuovo framework, in questo **E-Commerce** realizzato con **Angular** e **Bootstrap**, è pensato per offrire un’esperienza di acquisto semplice e accattivante. Potrai filtrare i prodotti, aggiungerli al carrello, il tutto in un’interfaccia reattiva e moderna.
 
 ---
 
