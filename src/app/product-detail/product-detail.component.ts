@@ -116,7 +116,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         // Se la modale non è stata ancora creata
         this.modalInstance = new bootstrap.Modal(modalElement);
       }
-      if (!this.modalInstance._isShown) {
+
+      const isModalVisible = modalElement.classList.contains('show'); // Controlla se la modale è già visibile
+
+      if (!isModalVisible) {
         // Mostra la modale solo se non è già visibile
         this.modalInstance.show();
       }
