@@ -1,6 +1,6 @@
 # E-Commerce Frontend
 
-Benvenuto nel mio primo progetto **Angular**(18.2.12), un piccolo progetto nato per imparare come usare questo nuovo framework, in questo **E-Commerce** realizzato con **Angular** e **Bootstrap**, è pensato per offrire un’esperienza di acquisto semplice e accattivante. Potrai filtrare i prodotti, aggiungerli al carrello, il tutto in un’interfaccia reattiva e moderna.
+Benvenuto nel mio primo progetto **Angular**(18.2.12), un piccolo progetto nato per imparare come usare questo nuovo framework, in questo **E-Commerce** realizzato con **Angular** e **Bootstrap**, è pensato per offrire un’esperienza di acquisto semplice e accattivante. Potrai filtrare i prodotti, navigare tra le pagine, vedere le recensioni dei clienti, aggiungerli al carrello, il tutto in un’interfaccia reattiva e moderna.
 
 ---
 
@@ -52,8 +52,8 @@ Segui questi passaggi per installare il progetto localmente:
 1. **Clona il repository:** Apri il terminale e digita:
 
 ```bash
-git clone https://github.com/AlanDAmario/my-angular-app
-cd my-angular-app
+git clone https://github.com/AlanDAmario/ng-commerce
+cd ng-commerce
 npm install
 ```
 
