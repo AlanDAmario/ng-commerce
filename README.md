@@ -52,7 +52,7 @@ Segui questi passaggi per installare il progetto localmente:
 1. **Clona il repository:** Apri il terminale e digita:
 
 ```bash
-git clone https://github.com/AlanDAmario/my-angular-app
+git clone https://github.com/AlanDAmario/ng-commerce
 cd ng-commerce
 npm install
 ```
